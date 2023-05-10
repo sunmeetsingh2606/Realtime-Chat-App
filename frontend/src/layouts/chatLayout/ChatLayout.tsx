@@ -4,8 +4,17 @@ import ChatMessages from '../../components/chatLayout/chatMessages/ChatMessages'
 import ChatsList from '../../components/chatLayout/chatsList/ChatsList';
 import TextField from '../../components/forms/textField/TextField';
 import { IChatListItem } from '../../interfaces/chatListItem';
+import { FC, useEffect } from 'react';
+import { useNavigate } from 'react-router';
+import { RootState } from '../../Redux/store';
+import { useSelector } from 'react-redux/es/exports';
 
-const ChatLayout = () => {
+const ChatLayout: FC = () => {
+
+    const user = useSelector((state: RootState) => state.user.user)
+
+
+    const navigate = useNavigate();
     const chats: IChatListItem[] = [
         {
             _id: '1',
@@ -21,6 +30,19 @@ const ChatLayout = () => {
     ];
 
     const activeChat = chats[0];
+
+    useEffect(() => {
+
+        if(!user){
+            navigate('/login');
+        }
+      
+    
+      return () => {
+        
+      }
+    }, [])
+    
 
     return (
         <div className="grid grid-cols-12 h-full">

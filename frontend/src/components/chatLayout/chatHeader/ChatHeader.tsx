@@ -1,6 +1,8 @@
 import { FC } from 'react';
 import { BiSearch } from 'react-icons/bi';
 import { IoCall } from 'react-icons/io5';
+import { signout } from '../../../firebase/firebaseUtils';
+import { FaSignOutAlt } from 'react-icons/fa';
 import { IChatListItem } from '../../../interfaces/chatListItem';
 
 interface ChatHeaderProps {
@@ -17,7 +19,7 @@ const ChatHeader: FC<ChatHeaderProps> = ({ chat }) => {
             <div>
                 <p className="text-xl flex flex-row gap-10">
                     <BiSearch fill="rgb(100 116 139)" />
-                    <IoCall fill="rgb(100 116 139)" />
+                    <FaSignOutAlt onClick ={() => signout()} fill="rgb(100 116 139)" />
                 </p>
             </div>
         </div>

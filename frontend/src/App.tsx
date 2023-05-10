@@ -1,23 +1,34 @@
-import { initializeApp } from 'firebase/app';
 import ChatLayout from './layouts/chatLayout/ChatLayout';
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-    apiKey: 'AIzaSyDvovZEpaTLIPvYhDtBhP8p-m6Ph39lu-A',
-    authDomain: 'realtime-chat-applicatio-da86f.firebaseapp.com',
-    projectId: 'realtime-chat-applicatio-da86f',
-    storageBucket: 'realtime-chat-applicatio-da86f.appspot.com',
-    messagingSenderId: '589489737769',
-    appId: '1:589489737769:web:c91270eff155f7273a4c38',
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+import { useEffect, useState } from 'react';
+import { onAuthStateChanged, User } from 'firebase/auth';
+import Login from './Pages/Login';
+import SignUp from './Pages/SignUp';
+import { auth } from './firebase/firebaseUtils';
+import { Routes, Route } from 'react-router-dom';
+import { addUser } from './Redux/User/userSlice';
+import { useDispatch } from 'react-redux';
 
 function App() {
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        // listener which listens to user state -> fires every time user  signin/signout
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            dispatch(addUser({ user }));
+        })
+        //have to unsubscribe, otherwise trouble
+        return () => unsubscribe()
+    }, [])
+
+
     return (
         <>
-            <ChatLayout />
+            <Routes>
+                <Route path='/' element={<ChatLayout/>}/>
+                <Route path='/login' element={<Login />} />
+                <Route path='/signUp' element={<SignUp />} />
+            </Routes>
         </>
     );
 }
