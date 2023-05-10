@@ -1,6 +1,6 @@
 import ChatLayout from './layouts/chatLayout/ChatLayout';
-import { useEffect, useState } from 'react';
-import { onAuthStateChanged, User } from 'firebase/auth';
+import { useEffect } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
 import Login from './Pages/Login';
 import SignUp from './Pages/SignUp';
 import { auth } from './firebase/firebaseUtils';

@@ -1,10 +1,14 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { HiOutlineMail } from "react-icons/hi";
 import { FaUserAlt } from 'react-icons/fa';
 import { RiLockPasswordLine } from 'react-icons/ri';
 import PrimaryButton from "../components/buttons/PrimaryButton";
 import TextField from "../components/forms/textField/TextField";
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../Redux/store';
+import { useNavigate } from 'react-router-dom';
+import { signUpWithEmailAndPassword } from '../firebase/firebaseUtils';
 
 interface formDataType {
     displayName: string,
@@ -16,6 +20,8 @@ interface formDataType {
 
 function SignUp() {
 
+    const user = useSelector((state:RootState) => state.user.user);
+    const navigate = useNavigate();
     const [formData, setFormData] = useState<formDataType>({
         displayName: '',
         email: '',
@@ -23,8 +29,22 @@ function SignUp() {
         confirmPassword: ''
     })
 
-    const handleSubmit = async () => {
+    useEffect(() => {
 
+        if(user){
+            navigate('/')
+        }
+
+    },[user])
+
+    const handleSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+        console.log({formData})
+        if(formData.password !== formData.confirmPassword) {
+            alert("Passwords dont match");
+            return
+        }
+        await signUpWithEmailAndPassword(formData.email, formData.password, formData.displayName);
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -33,6 +53,7 @@ function SignUp() {
             [e.target.name]: e.target.value
         })
     }
+
     return (
         <div className="min-h-screen bg-gray-900 flex flex-col justify-center items-center">
             <div className="w-full max-w-md p-6 bg-gray-800 rounded-lg shadow-xl">

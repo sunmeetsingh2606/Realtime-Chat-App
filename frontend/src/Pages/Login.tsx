@@ -9,8 +9,8 @@ import { Link } from 'react-router-dom';
 import { RootState } from "../Redux/store";
 import { useSelector } from 'react-redux/es/exports';
 import { useNavigate } from 'react-router-dom';
-
-
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase/firebaseUtils";
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -18,10 +18,9 @@ function Login() {
     const navigate = useNavigate();
 
     const user = useSelector((state: RootState) => state.user.user);
-    console.log('in login', user)
 
     useEffect(() => {
-        
+
         if (user) {
             navigate('/');
         }
@@ -39,8 +38,9 @@ function Login() {
         setPassword(event.target.value);
     };
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        await signInWithEmailAndPassword(auth, email, password).catch(err => alert(err))
         // Submit the email and password data to the backend for authentication
     };
 

@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { GoogleAuthProvider,signOut, User, getAuth, onAuthStateChanged, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider,signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, getAuth, signInWithPopup } from 'firebase/auth';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -24,5 +24,18 @@ export const signInwithGoogle = async () => {
     }
 }
 
-export const signout = async () => signOut(auth)
+//sign up -> register
+export const signUpWithEmailAndPassword = async (email: string, password: string, displayName: string) => {
+
+    //this doesnt create users display name so we have to manually add one
+    const user = await createUserWithEmailAndPassword(auth, email, password);
+    await updateProfile(user.user, {
+        displayName: displayName
+    })
+}
+
+export const signout = async () => { 
+    await signOut(auth);
+    window.location.reload(); 
+}
 
