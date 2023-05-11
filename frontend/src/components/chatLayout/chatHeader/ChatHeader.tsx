@@ -11,6 +11,7 @@ interface ChatHeaderProps {
 const ChatHeader: FC<ChatHeaderProps> = ({ chat }) => {
     return (
         <div className="flex flex-row items-center">
+            <img src={chat.photoURL} className='w-[50px] mr-3 h-[50px] rounded-full' alt='avatar'/>
             <div className="flex-grow">
                 <p className="text-xl text-slate-200">{chat.displayName}</p>
                 <p className="text-sm text-slate-500">{chat.isOnline ? 'Online' : 'Offline  '}</p>

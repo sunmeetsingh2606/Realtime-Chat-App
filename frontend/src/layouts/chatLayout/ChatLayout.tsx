@@ -20,7 +20,7 @@ const ChatLayout: FC = () => {
     const chats: IChatListItem[] = [
         {
             uid: "user1",
-            photoURL: "https://avatars.dicebear.com/api/bottts/neutral/user1.svg",
+            photoURL: "https://avatars.dicebear.com/api/initials/John Doe.svg",
             displayName: "John Doe",
             lastMessage: "Hey, how are you doing?",
             isActive: true,
@@ -28,7 +28,7 @@ const ChatLayout: FC = () => {
         },
         {
             uid: "user2",
-            photoURL: "https://avatars.dicebear.com/api/bottts/neutral/user2.svg",
+            photoURL: "https://avatars.dicebear.com/api/initials/Jane Smith.svg",
             displayName: "Jane Smith",
             lastMessage: "I'll be there in 10 minutes.",
             isActive: false,
@@ -36,7 +36,7 @@ const ChatLayout: FC = () => {
         },
         {
             uid: "user3",
-            photoURL: "https://avatars.dicebear.com/api/bottts/neutral/user3.svg",
+            photoURL: "https://avatars.dicebear.com/api/initials/Bob Johnson.svg",
             displayName: "Bob Johnson",
             lastMessage: "What's up?",
             isActive: false,
@@ -44,7 +44,7 @@ const ChatLayout: FC = () => {
         },
         {
             uid: "user4",
-            photoURL: "https://avatars.dicebear.com/api/bottts/neutral/user4.svg",
+            photoURL: "https://avatars.dicebear.com/api/initials/Samantha Lee.svg",
             displayName: "Samantha Lee",
             lastMessage: "Can we meet tomorrow?",
             isActive: false,
@@ -52,7 +52,7 @@ const ChatLayout: FC = () => {
         },
         {
             uid: "user5",
-            photoURL: "https://avatars.dicebear.com/api/bottts/neutral/user5.svg",
+            photoURL: "https://avatars.dicebear.com/api/initials/Mike Williams.svg",
             displayName: "Mike Williams",
             lastMessage: "See you soon!",
             isActive: false,
@@ -87,7 +87,7 @@ const ChatLayout: FC = () => {
             <div className="col-span-3 flex flex-col gap-2 p-4">
                 <div className='flex items-center justify-between'>
                     <div className='flex items-center gap-2'>
-                        <img src={user?.photoURL || ''} className='w-[50px] h-[50px] rounded-lg' alt='avatar'/>        
+                        <img src={user?.photoURL || ''} className='w-[50px] h-[50px] rounded-full' alt='avatar'/>        
                         <span className='text-xl text-slate-200'>{user?.displayName}</span>
                     </div>
                     {/** chatlist dropdown menu */}
@@ -103,6 +103,8 @@ const ChatLayout: FC = () => {
                         </button>
                     </div>
                     </div>
+
+                    
                 </div>
                 <TextField className="w-full" placeholder="Search" />
                 <ChatsList chats={chats} />

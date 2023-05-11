@@ -20,7 +20,7 @@ const ChatsListItem: FC<ChatsListItemProps> = ({ chat }) => {
             <div className="flex flex-row items-center gap-2">
                 {
                     chat.photoURL ? 
-                    <img src={chat.photoURL} className='w-[50px] h-[50px] rounded-lg' alt='avatar'/> :
+                    <img src={chat.photoURL} className='w-[50px] h-[50px] rounded-full' alt='avatar'/> :
                     <Avatar name={chat.displayName} className="rounded-normal" size="50" />
                 }
                 <div className="flex-grow">

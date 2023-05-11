@@ -1,20 +1,29 @@
 import classNames from 'classnames';
 import { FC } from 'react';
 import ChatMessageBubble from './chatMessageBubble/ChatMessageBubble';
+import { BiDotsHorizontal }from 'react-icons/bi';
+
 
 interface ChatMessagesProps {
     className?: string;
 }
 
 const ChatMessages: FC<ChatMessagesProps> = ({ className }) => {
+    const reactions = ['😂','😂','😂','😂','😂',]
     const chatMessages = [
         {
-            _id: '1',
-            name: 'Sunmeet Singh',
+            uid: 'user2',
             message: 'This is test message',
-            isSender: false,
+            reactions: '😊'
         },
-        { _id: '2', name: 'Sunmeet Singh', message: 'Hello', isSender: true },
+        {
+            uid: 'user2',
+            message: 'This is another test message',
+        },
+        {
+            uid: 'user1',
+            message: 'Hello, there',
+        },
     ];
 
     return (
@@ -22,10 +31,20 @@ const ChatMessages: FC<ChatMessagesProps> = ({ className }) => {
             {chatMessages.map((chatMessage) => {
                 return (
                     <ChatMessageBubble
-                        key={chatMessage._id}
-                        isSender={chatMessage.isSender}
+                        key={chatMessage.uid}
+                        isSender={chatMessage.uid === 'user1'}
+                        reactions={chatMessage.reactions}
                     >
                         <p>{chatMessage.message}</p>
+                        <button className='bg-secondary-emphasis relative group hidden group-hover:block text-primary'>
+                            <BiDotsHorizontal />
+                            {/** container to show all reactions */}
+                            <ul className='hidden group-focus-within:grid rounded-md min-w-[150px] absolute top-full z-10 gap-1 grid-cols-5 p-2 bg-secondary'>
+                                {
+                                    reactions.map(r => <li className='hover:scale-125 transition-all duration-100'>{r}</li>)
+                                }
+                            </ul>
+                        </button>
                     </ChatMessageBubble>
                 );
             })}
