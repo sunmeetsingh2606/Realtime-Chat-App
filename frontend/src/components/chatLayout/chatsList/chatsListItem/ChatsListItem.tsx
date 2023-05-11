@@ -18,9 +18,13 @@ const ChatsListItem: FC<ChatsListItemProps> = ({ chat }) => {
             )}
         >
             <div className="flex flex-row items-center gap-2">
-                <Avatar name={chat.name} className="rounded-normal" size="50" />
+                {
+                    chat.photoURL ? 
+                    <img src={chat.photoURL} className='w-[50px] h-[50px] rounded-lg' alt='avatar'/> :
+                    <Avatar name={chat.displayName} className="rounded-normal" size="50" />
+                }
                 <div className="flex-grow">
-                    <p className="text-slate-200">{chat.name}</p>
+                    <p className="text-slate-200">{chat.displayName}</p>
                     <p className="text-slate-500 text-sm">{chat.lastMessage}</p>
                 </div>
             </div>

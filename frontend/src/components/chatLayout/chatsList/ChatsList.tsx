@@ -11,7 +11,7 @@ const ChatsList: FC<ChatsListProps> = ({ chats }) => {
         <>
             <div className="flex flex-col gap-2">
                 {chats.map((chat) => {
-                    return <ChatsListItem key={chat._id} chat={chat} />;
+                    return <ChatsListItem key={chat.uid} chat={chat} />;
                 })}
             </div>
         </>
