@@ -2,15 +2,28 @@ import { FC } from 'react';
 import Avatar from 'react-avatar';
 import { IChatListItem } from '../../../../interfaces/chatListItem';
 import classNames from 'classnames';
-
+import { motion } from 'framer-motion';
 interface ChatsListItemProps {
     chat: IChatListItem;
 }
 
+const chatListItemVariant = {
+    hidden:{
+        scale: 0
+    },
+    show:{
+        scale: 1,
+        transition: {
+            duration: .2
+        }
+    }
+}
+
 const ChatsListItem: FC<ChatsListItemProps> = ({ chat }) => {
     return (
-        <div
-            className={classNames(
+        <motion.div
+        variants={chatListItemVariant}
+        className={classNames(
                 'rounded-normal cursor-pointer transition-all duration-300 p-2 hover:bg-primary',
                 {
                     'bg-primary': chat.isActive,
@@ -28,7 +41,7 @@ const ChatsListItem: FC<ChatsListItemProps> = ({ chat }) => {
                     <p className="text-slate-500 text-sm">{chat.lastMessage}</p>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 

@@ -30,7 +30,8 @@ export const signUpWithEmailAndPassword = async (email: string, password: string
     //this doesnt create users display name so we have to manually add one
     const user = await createUserWithEmailAndPassword(auth, email, password);
     await updateProfile(user.user, {
-        displayName: displayName
+        displayName: displayName,
+        photoURL: `https://avatars.dicebear.com/api/initials/${displayName}.svg`
     })
 }
 

@@ -21,6 +21,10 @@ const ChatMessages: FC<ChatMessagesProps> = ({ className }) => {
             message: 'This is another test message',
         },
         {
+            uid: 'user2',
+            message: 'This is third test message',
+        },
+        {
             uid: 'user1',
             message: 'Hello, there',
         },
@@ -39,7 +43,7 @@ const ChatMessages: FC<ChatMessagesProps> = ({ className }) => {
                         <button className='bg-secondary-emphasis relative group hidden group-hover:block text-primary'>
                             <BiDotsHorizontal />
                             {/** container to show all reactions */}
-                            <ul className='hidden group-focus-within:grid rounded-md min-w-[150px] absolute top-full z-10 gap-1 grid-cols-5 p-2 bg-secondary'>
+                            <ul className='hidden group-focus-within:grid rounded-md min-w-[150px] absolute top-full -left-12 z-10 gap-1 grid-cols-5 p-2 bg-secondary'>
                                 {
                                     reactions.map(r => <li className='hover:scale-125 transition-all duration-100'>{r}</li>)
                                 }
