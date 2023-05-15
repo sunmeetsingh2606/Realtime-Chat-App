@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
-import { Chatroom } from 'src/chatrooms/entities/chatroom.entity';
+import { Chatroom } from 'src/chats/entities/chatroom.entity';
 import { User } from 'src/users/entities/user.entity';
 
 export type ChatroomMessageDocument = HydratedDocument<ChatroomMessage>;
