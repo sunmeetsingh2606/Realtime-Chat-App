@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, Query } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 
@@ -11,6 +11,11 @@ export class AuthController {
         return await this.authService.login(userCred);
     }
     
+    @Get('authenticate')
+    async authenticate(@Query('token') token: string){
+        return await this.authService.authenticate(token);
+    }
+
     @Post('/loginWithGoogle')
     async googleLogin(@Body() userCred: CreateUserDto ){
         return await this.authService.loginWithGoogle(userCred);
