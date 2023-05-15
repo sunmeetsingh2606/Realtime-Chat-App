@@ -9,14 +9,16 @@ import { Link } from 'react-router-dom';
 import { RootState } from "../Redux/store";
 import { useSelector } from 'react-redux/es/exports';
 import { useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase/firebaseUtils";
+import { login } from "../api/signInAndSignUp";
+import { useDispatch } from "react-redux/es/exports";
+import { addUser } from "../Redux/User/userSlice";
+
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
-
+    const dispatch = useDispatch();
     const user = useSelector((state: RootState) => state.user.user);
 
     useEffect(() => {
@@ -40,11 +42,25 @@ function Login() {
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        await signInWithEmailAndPassword(auth, email, password).catch(err => alert(err))
+        const res = await login(email, password);
+        //if(res.data.err) throw res.data.err;
+        console.log(res);
+        alert(res.msg);
+
+        if(res.data.user){
+            console.log({user: res.data.user})
+            dispatch(addUser({ user: res.data.user}))
+            localStorage.setItem('token',res.data.token);
+        }
         // Submit the email and password data to the backend for authentication
     };
 
 
+    const handleSignInWithGoogle = async () => {
+        const data = await signInwithGoogle();
+        localStorage.setItem("token", data.data.token);
+        dispatch(addUser({user: data.data.user}));
+    }
 
     return (
         <div className="min-h-screen bg-gray-900 flex flex-col justify-center items-center">
@@ -106,7 +122,7 @@ function Login() {
                             Sign In
                         </PrimaryButton>
                         <PrimaryButton
-                            onClick={() => signInwithGoogle()}
+                            onClick={() => handleSignInWithGoogle()}
                             type="button"
                             className="flex gap-3 items-center justify-center w-full bg-red-500 hover:bg-red-600 py-2 px-4 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 ">
                             <FaGoogle /> Sign in With Google

@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { GoogleAuthProvider,signOut, createUserWithEmailAndPassword, updateProfile, getAuth, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider,signOut, getAuth, signInWithPopup } from 'firebase/auth';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -18,22 +18,33 @@ export const auth = getAuth(app);
 
 export const signInwithGoogle = async () => {
     try {
-      await signInWithPopup(auth, provider).catch(err => { throw err });
+      const userCreds =  await signInWithPopup(auth, provider).catch(err => { throw err });
+      if(userCreds.user){
+        const user = userCreds.user;
+        const res = await fetch(`${import.meta.env.VITE_API_ADDRESS}/auth/loginWithGoogle`, {
+            method: 'POST',
+            headers: {
+                'Content-type':'application/json'
+            },
+            body: JSON.stringify({
+                photoURL: user.photoURL,
+                displayName: user.displayName,
+                email: user.email,
+                password: '123456',
+
+            })
+        });
+        const data = await res.json();
+        console.log({res, data})
+
+        return data;
+      }
     } catch (err){
         console.error(err);
     }
 }
 
 //sign up -> register
-export const signUpWithEmailAndPassword = async (email: string, password: string, displayName: string) => {
-
-    //this doesnt create users display name so we have to manually add one
-    const user = await createUserWithEmailAndPassword(auth, email, password);
-    await updateProfile(user.user, {
-        displayName: displayName,
-        photoURL: `https://avatars.dicebear.com/api/initials/${displayName}.svg`
-    })
-}
 
 export const signout = async () => { 
     await signOut(auth);

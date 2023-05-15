@@ -8,8 +8,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../Redux/store';
 import { useNavigate } from 'react-router-dom';
-import { signUpWithEmailAndPassword } from '../firebase/firebaseUtils';
-
+import { register } from '../api/signInAndSignUp';
 interface formDataType {
     displayName: string,
     email: string,
@@ -44,7 +43,12 @@ function SignUp() {
             alert("Passwords dont match");
             return
         }
-        await signUpWithEmailAndPassword(formData.email, formData.password, formData.displayName);
+
+        const res = await register(formData);
+        if(res.data.err) throw res.data.err;
+
+        alert(res.msg);
+
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

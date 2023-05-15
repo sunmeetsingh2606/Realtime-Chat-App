@@ -10,7 +10,7 @@ import { RootState } from '../../Redux/store';
 import { useSelector } from 'react-redux/es/exports';
 import { IoEllipsisVertical } from 'react-icons/io5';
 import { signout } from '../../firebase/firebaseUtils';
-
+import Avatar from 'react-avatar';
 
 const ChatLayout: FC = () => {
 
@@ -63,7 +63,9 @@ const ChatLayout: FC = () => {
 
     async function handleSignOutClick() {
         // Implement your sign out logic here
+        localStorage.clear();
         await signout();
+        
     }
 
 
@@ -87,7 +89,11 @@ const ChatLayout: FC = () => {
             <div className="col-span-3 flex flex-col gap-2 p-4">
                 <div className='flex items-center justify-between'>
                     <div className='flex items-center gap-2'>
-                        <img src={user?.photoURL || ''} className='w-[50px] h-[50px] rounded-full' alt='avatar' />
+                        {
+                            user?.photoURL ?
+                                <img src={user?.photoURL} className='w-[50px] h-[50px] rounded-full' alt='avatar' /> :
+                                <Avatar name={user?.displayName || ""} className="rounded-full" size="50" />
+                        }
                         <span className='text-xl text-slate-200'>{user?.displayName}</span>
                     </div>
                     {/** chatlist dropdown menu */}
