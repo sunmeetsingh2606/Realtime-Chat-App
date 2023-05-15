@@ -30,13 +30,18 @@ export class AuthService {
         return { message: "user doesnt exist" }
     }
 
-    async loginWithGoogle(@Body() userCred: CreateUserDto){
-        let user = await this.usersService.findOne(userCred.email);
-        if(!user){
-           user =  await this.usersService.create(userCred);
+    async loginWithGoogle(@Body() userCred: CreateUserDto) {
+        if (userCred.email) {
+            let user = await this.usersService.findOne(userCred.email);
+            if (!user) {
+                user = await this.usersService.create({ ...userCred, password: '123456'});
+            }
+            const token = sign({ user }, process.env.JWT_SECRET);
+            return {
+                message: 'signed in successfully',
+                data: { user, token }
+            };
         }
-        const token = sign({ user }, process.env.JWT_SECRET);
-        return { token, user };
     }
 
     async register(@Body() userCred: CreateUserDto){

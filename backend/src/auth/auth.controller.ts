@@ -11,7 +11,7 @@ export class AuthController {
         return await this.authService.login(userCred);
     }
     
-    @Post('/googleLogin')
+    @Post('/loginWithGoogle')
     async googleLogin(@Body() userCred: CreateUserDto ){
         return await this.authService.loginWithGoogle(userCred);
     }

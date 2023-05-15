@@ -8,13 +8,33 @@ import { Routes, Route } from 'react-router-dom';
 import { addUser } from './Redux/User/userSlice';
 import { useDispatch } from 'react-redux';
 
+
+
 function App() {
 
     const dispatch = useDispatch();
 
     useEffect(() => {
         // listener which listens to user state -> fires every time user  signin/signout
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            if(user){
+                //console.log({url: import.meta});
+                const res = await fetch(`${import.meta.env.VITE_API_ADDRESS}/auth/loginWithGoogle`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-type':'application/json'
+                    },
+                    body: JSON.stringify({
+                        photoURL: user.photoURL,
+                        displayName: user.displayName,
+                        email: user.email,
+                        password: '123456',
+
+                    })
+                });
+                const data = await res.json();
+                console.log({res, data})
+            }
             dispatch(addUser({ user }));
         })
         //have to unsubscribe, otherwise trouble
