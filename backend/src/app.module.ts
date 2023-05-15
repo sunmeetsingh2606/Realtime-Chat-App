@@ -8,6 +8,7 @@ import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { ApiResponseInterceptor } from './shared/interceptors/api-response.interceptor';
 import { ChatroomsModule } from './chatrooms/chatrooms.module';
 import { ChatroomMessagesModule } from './chatroom-messages/chatroom-messages.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
     imports: [
@@ -25,6 +26,7 @@ import { ChatroomMessagesModule } from './chatroom-messages/chatroom-messages.mo
         UsersModule,
         ChatroomsModule,
         ChatroomMessagesModule,
+        AuthModule,
     ],
     controllers: [AppController],
     providers: [

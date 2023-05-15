@@ -9,8 +9,18 @@ import { Model } from 'mongoose';
 export class UsersService {
     constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
-    create(createUserDto: CreateUserDto) {
-        return 'This action adds a new user';
+    async create(createUserDto: CreateUserDto):Promise<any> {
+        const user = await this.userModel.findOne({email: createUserDto.email});
+        if(user){
+            return { user };
+        }
+        const newUser = await new this.userModel(createUserDto);
+        newUser.save();
+
+        return {
+            user: newUser,
+
+        }
     }
 
     async findAll() {
@@ -18,8 +28,13 @@ export class UsersService {
         return users;
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} user`;
+    async findOne(email: string):Promise<CreateUserDto>{
+
+        const user = await this.userModel.findOne({ email });
+        if(user){
+            return user
+        }
+        return null
     }
 
     update(id: number, updateUserDto: UpdateUserDto) {
