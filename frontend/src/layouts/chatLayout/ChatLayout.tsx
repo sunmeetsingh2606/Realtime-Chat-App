@@ -87,32 +87,36 @@ const ChatLayout: FC = () => {
             <div className="col-span-3 flex flex-col gap-2 p-4">
                 <div className='flex items-center justify-between'>
                     <div className='flex items-center gap-2'>
-                        <img src={user?.photoURL || ''} className='w-[50px] h-[50px] rounded-full' alt='avatar'/>        
+                        <img src={user?.photoURL || ''} className='w-[50px] h-[50px] rounded-full' alt='avatar' />
                         <span className='text-xl text-slate-200'>{user?.displayName}</span>
                     </div>
                     {/** chatlist dropdown menu */}
                     {/** elements wont take focus unless they are a,input etc or have a tabindex */}
                     <div tabIndex={1} className='group relative cursor-pointer'>
-                    <IoEllipsisVertical className='text-slate-300 text-3xl' />
-                    <div className='absolute scale-0 transition-all duration-200 -translate-x-2 origin-top-right invisible  group-focus-within:visible group-focus-within:scale-100 top-full right-0 mt-1 bg-primary py-2 w-48 rounded-lg shadow-lg z-10'>
-                        <button
-                            className='w-full text-left hover:bg-secondary-emphasis px-4 py-2 '
-                            onClick={handleSignOutClick}
-                        >
-                            Sign out
-                        </button>
-                    </div>
+                        <IoEllipsisVertical className='text-slate-300 text-3xl' />
+                        <div className='absolute scale-0 transition-all duration-200 -translate-x-2 origin-top-right invisible  group-focus-within:visible group-focus-within:scale-100 top-full right-0 mt-1 bg-primary py-2 w-48 rounded-lg shadow-lg z-10'>
+                            <button
+                                className='w-full text-left hover:bg-secondary-emphasis px-4 py-2 '
+                                onClick={handleSignOutClick}
+                            >
+                                Sign out
+                            </button>
+                        </div>
                     </div>
 
-                    
+
                 </div>
                 <TextField className="w-full" placeholder="Search" />
                 <ChatsList chats={chats} />
             </div>
-            <div className="col-span-9 bg-primary rounded-normal flex flex-col p-4">
-                <ChatHeader chat={activeChat} />
-                <ChatMessages className="flex-grow flex flex-col justify-end gap-2 py-4" />
+            <div className="col-span-9 max-h-screen overflow-hidden bg-primary rounded-normal flex flex-col p-4">
+                <div className='sticky top-0 right-0 z-10'>
+                    <ChatHeader chat={activeChat} />
+                </div>
+                <ChatMessages className="flex-grow max-h-full overflow-y-scroll pr-2 flex flex-col justify-end gap-2 py-4" />
+                <div className='sticky bottom-0 z-10'>
                 <ChatFooter />
+                </div>
             </div>
         </div>
     );

@@ -11,7 +11,7 @@ interface ChatMessagesProps {
 
 const ChatMessages: FC<ChatMessagesProps> = ({ className }) => {
     const reactions = ['😂','😂','😂','😂','😂',]
-    const user = useSelector((state: RootState) => state.user.user);
+    //const user = useSelector((state: RootState) => state.user.user);
     const chatMessages = [
         {
             uid: 'user2',
@@ -57,6 +57,19 @@ const ChatMessages: FC<ChatMessagesProps> = ({ className }) => {
             createdAt: new Date(),
             photoURL: "https://avatars.dicebear.com/api/initials/John Doe.svg",
         },
+        {
+            uid: 'user1',
+            message: 'Hello, there',
+            createdAt: new Date(),
+            photoURL: "https://avatars.dicebear.com/api/initials/John Doe.svg",
+        },
+        {
+            uid: 'user1',
+            message: 'Hello, there',
+            createdAt: new Date(),
+            photoURL: "https://avatars.dicebear.com/api/initials/John Doe.svg",
+        },
+        
     ];
 
     const renderPhoto = (index: number) => {
