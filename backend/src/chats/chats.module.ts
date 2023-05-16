@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ChatsService } from './chats.service';
 import { ChatsController } from './chats.controller';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -19,4 +19,5 @@ import { ChatsGateway } from './chats.gateway';
     controllers: [ChatsController],
     providers: [ChatsService, ChatsGateway],
 })
-export class ChatsModule {}
+
+export class ChatsModule  {}
