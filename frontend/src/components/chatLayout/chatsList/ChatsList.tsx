@@ -2,7 +2,7 @@ import { FC } from 'react';
 import ChatsListItem from './chatsListItem/ChatsListItem';
 import { IChatListItem } from '../../../interfaces/chatListItem';
 import { motion, } from 'framer-motion';
-
+import { IChatroom } from '../../../interfaces/chatRoom';
 const chatListContainerVariant = {
     show: {
         transition: {
@@ -12,7 +12,7 @@ const chatListContainerVariant = {
 }
 
 interface ChatsListProps {
-    chats: IChatListItem[];
+    chats: IChatroom[];
 }
 
 const ChatsList: FC<ChatsListProps> = ({ chats }) => {
@@ -24,7 +24,7 @@ const ChatsList: FC<ChatsListProps> = ({ chats }) => {
             animate="show"
             className="flex flex-col gap-2">
                 {chats.map((chat) => {
-                    return <ChatsListItem key={chat.uid} chat={chat} />;
+                    return <ChatsListItem key={chat._id} chat={chat} />;
                 })}
             </motion.div>
         </>

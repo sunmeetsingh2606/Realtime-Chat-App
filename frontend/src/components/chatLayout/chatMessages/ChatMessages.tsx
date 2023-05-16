@@ -93,7 +93,7 @@ const ChatMessages: FC<ChatMessagesProps> = ({ className }) => {
             {chatMessages.map((chatMessage, index) => {
                 return (
                     <ChatMessageBubble
-                        key={chatMessage.uid}
+                        key={chatMessage.message}
                         isSender={chatMessage.uid === 'user1'}
                     >
                         {/** showing message content */}

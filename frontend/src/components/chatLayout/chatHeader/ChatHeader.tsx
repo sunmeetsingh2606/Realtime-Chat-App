@@ -3,18 +3,35 @@ import { BiSearch } from 'react-icons/bi';
 import { IoCall } from 'react-icons/io5';
 import { signout } from '../../../firebase/firebaseUtils';
 import { IChatListItem } from '../../../interfaces/chatListItem';
+import { User } from '../../../interfaces/User';
+import { IChatroom } from '../../../interfaces/chatRoom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../Redux/store';
+import Avatar from 'react-avatar';
 
 interface ChatHeaderProps {
-    chat: IChatListItem;
+    chat: IChatroom;
 }
 
 const ChatHeader: FC<ChatHeaderProps> = ({ chat }) => {
+    const user = useSelector((state:RootState) => state.user.user);
+
+    let activeChatUser: User | undefined;
+    if(chat)
+    chat.users.map(u => {
+        if(user?._id !== u._id) activeChatUser = u;
+    } )
+
     return (
         <div className="flex flex-row items-center">
-            <img src={chat.photoURL} className='w-[50px] mr-3 h-[50px] rounded-full' alt='avatar'/>
+           {
+            activeChatUser?.photoURL ?
+            <img src={activeChatUser?.photoURL } className='w-[50px] mr-3 h-[50px] rounded-full' alt='avatar'/> :
+            <Avatar name={activeChatUser?.displayName || ""} className="rounded-full" size="50" />
+           }
             <div className="flex-grow">
-                <p className="text-xl text-slate-200">{chat.displayName}</p>
-                <p className="text-sm text-slate-500">{chat.isOnline ? 'Online' : 'Offline  '}</p>
+                <p className="text-xl text-slate-200">{activeChatUser?.displayName}</p>
+                <p className="text-sm text-slate-500">{activeChatUser?.isOnline ? 'Online' : 'Offline  '}</p>
             </div>
             <div>
                 <p className="text-xl flex flex-row gap-10">

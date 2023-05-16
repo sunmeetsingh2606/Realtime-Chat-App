@@ -4,61 +4,63 @@ import ChatMessages from '../../components/chatLayout/chatMessages/ChatMessages'
 import ChatsList from '../../components/chatLayout/chatsList/ChatsList';
 import TextField from '../../components/forms/textField/TextField';
 import { IChatListItem } from '../../interfaces/chatListItem';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { RootState } from '../../Redux/store';
 import { useSelector } from 'react-redux/es/exports';
 import { IoEllipsisVertical } from 'react-icons/io5';
 import { signout } from '../../firebase/firebaseUtils';
 import Avatar from 'react-avatar';
+import { findAllChatRooms } from '../../api/chat';
+import { IChatroom } from '../../interfaces/chatRoom';
 
 const ChatLayout: FC = () => {
 
     const user = useSelector((state: RootState) => state.user.user)
-
+    const [chatrooms, setChatRooms] = useState<IChatroom[]>([]);
     const navigate = useNavigate();
-    const chats: IChatListItem[] = [
-        {
-            uid: "user1",
-            photoURL: "https://avatars.dicebear.com/api/initials/John Doe.svg",
-            displayName: "John Doe",
-            lastMessage: "Hey, how are you doing?",
-            isActive: true,
-            isOnline: false
-        },
-        {
-            uid: "user2",
-            photoURL: "https://avatars.dicebear.com/api/initials/Jane Smith.svg",
-            displayName: "Jane Smith",
-            lastMessage: "I'll be there in 10 minutes.",
-            isActive: false,
-            isOnline: true
-        },
-        {
-            uid: "user3",
-            photoURL: "https://avatars.dicebear.com/api/initials/Bob Johnson.svg",
-            displayName: "Bob Johnson",
-            lastMessage: "What's up?",
-            isActive: false,
-            isOnline: true
-        },
-        {
-            uid: "user4",
-            photoURL: "https://avatars.dicebear.com/api/initials/Samantha Lee.svg",
-            displayName: "Samantha Lee",
-            lastMessage: "Can we meet tomorrow?",
-            isActive: false,
-            isOnline: false
-        },
-        {
-            uid: "user5",
-            photoURL: "https://avatars.dicebear.com/api/initials/Mike Williams.svg",
-            displayName: "Mike Williams",
-            lastMessage: "See you soon!",
-            isActive: false,
-            isOnline: true
-        }
-    ];
+    // const chats: IChatListItem[] = [
+    //     {
+    //         uid: "user1",
+    //         photoURL: "https://avatars.dicebear.com/api/initials/John Doe.svg",
+    //         displayName: "John Doe",
+    //         lastMessage: "Hey, how are you doing?",
+    //         isActive: true,
+    //         isOnline: false
+    //     },
+    //     {
+    //         uid: "user2",
+    //         photoURL: "https://avatars.dicebear.com/api/initials/Jane Smith.svg",
+    //         displayName: "Jane Smith",
+    //         lastMessage: "I'll be there in 10 minutes.",
+    //         isActive: false,
+    //         isOnline: true
+    //     },
+    //     {
+    //         uid: "user3",
+    //         photoURL: "https://avatars.dicebear.com/api/initials/Bob Johnson.svg",
+    //         displayName: "Bob Johnson",
+    //         lastMessage: "What's up?",
+    //         isActive: false,
+    //         isOnline: true
+    //     },
+    //     {
+    //         uid: "user4",
+    //         photoURL: "https://avatars.dicebear.com/api/initials/Samantha Lee.svg",
+    //         displayName: "Samantha Lee",
+    //         lastMessage: "Can we meet tomorrow?",
+    //         isActive: false,
+    //         isOnline: false
+    //     },
+    //     {
+    //         uid: "user5",
+    //         photoURL: "https://avatars.dicebear.com/api/initials/Mike Williams.svg",
+    //         displayName: "Mike Williams",
+    //         lastMessage: "See you soon!",
+    //         isActive: false,
+    //         isOnline: true
+    //     }
+    // ];
 
 
     async function handleSignOutClick() {
@@ -69,19 +71,29 @@ const ChatLayout: FC = () => {
     }
 
 
-    const activeChat = chats[0];
+    const activeChat = chatrooms[0];
 
     useEffect(() => {
 
         if (!user) {
             navigate('/login');
         }
-
+        fetchAllChatRooms();
 
         return () => {
 
         }
     }, [])
+
+    const fetchAllChatRooms = async () => {
+        const token = localStorage.getItem('token');
+        if(token){
+            const res = await findAllChatRooms(token);
+            console.log({res});
+            setChatRooms(res.data);
+            chatrooms[0].isActive = true;
+        }
+    }
 
 
     return (
@@ -113,7 +125,7 @@ const ChatLayout: FC = () => {
 
                 </div>
                 <TextField className="w-full" placeholder="Search" />
-                <ChatsList chats={chats} />
+                <ChatsList chats={chatrooms} />
             </div>
             <div className="col-span-9 max-h-screen overflow-hidden bg-primary rounded-normal flex flex-col p-4">
                 <div className='sticky top-0 right-0 z-10'>
