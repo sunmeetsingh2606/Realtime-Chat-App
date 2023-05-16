@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { ApiResponseInterceptor } from './shared/interceptors/api-response.interceptor';
 import { ChatsModule } from './chats/chats.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
     imports: [
@@ -23,6 +24,7 @@ import { ChatsModule } from './chats/chats.module';
         }),
         UsersModule,
         ChatsModule,
+        AuthModule
     ],
     controllers: [AppController],
     providers: [

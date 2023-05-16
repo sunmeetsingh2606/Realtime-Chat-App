@@ -1,10 +1,11 @@
-import { Injectable, Query } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException, Query, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { Body } from '@nestjs/common';
 import { compare, hash } from 'bcrypt';
 import { decode, sign } from 'jsonwebtoken';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { response } from 'express';
+import { LoginDto } from './dto/login.dto';
 
 const hashSalts = 10;
 
@@ -14,88 +15,52 @@ export class AuthService {
     //to check for error handling
     constructor(private readonly usersService: UsersService){}
 
-    async login(@Body() loginCreds: { email: string, password: string }){
-       try {
-        const user = await this.usersService.findOne(loginCreds.email);
-        const token = sign({ user }, process.env.JWT_SECRET);
-        if(user){
-            const match = await compare(loginCreds.password, user.password);
-            if(!match) return { message: 'Incorrect Password' };
+    async login(loginCreds: LoginDto){
 
-            //removing password from the response user
-            delete user.password;
-            return { 
-                message: 'Logged in successfully',
-                data: { user, token }
-            }
+        const user = await this.usersService.findOne(loginCreds.email);
+        if (!user) {
+            throw new NotFoundException('User not found!');
         }
-        return { message: "user doesnt exist" }
-       } catch (err){
-        console.error({ err });
-        return {
-            message: 'There was some error',
-            data: err
-        }
-       }
+        const token = sign({ user }, process.env.JWT_SECRET);
+
+        const match = await compare(loginCreds.password, user.password);
+        if (!match) throw new UnauthorizedException('Incorrect Password!');
+
+        //removing password from the response user
+        //const { password, ...responseUser } = user; this line was causing that problem
+        // delete user.password;
+        return { user, token }
     }
 
-    async authenticate(@Query('token') token:string ){
+    async authenticate(token:string ){
+
+        if(!token) throw new BadRequestException('token is required!')
         const decoded = decode(token) as { user:CreateUserDto };
 
         if(decoded){
-            return {
-                message: "Token verified",
-                data: { user: decoded.user }
-            }
+            return { user: decoded.user }
         } else {
-            return { message: 'invalid token... Access denied'}
+           throw new UnauthorizedException('Invalid token!')
         }
     }
 
-    async loginWithGoogle(@Body() userCred: CreateUserDto) {
-        try {
-            if (userCred.email) {
-                let user = await this.usersService.findOne(userCred.email);
-                if (!user) {
-                    user = await this.usersService.create(userCred);
-                }
-                const token = sign({ user }, process.env.JWT_SECRET);
-                return {
-                    message: 'signed in successfully',
-                    data: { user, token }
-                };
-            }
-        } catch (err){
-            console.error({ err });
-            return {
-                message: 'There was some error',
-                data: err
-            }
+    async loginWithGoogle(userCred: CreateUserDto) {
+        let user = await this.usersService.findOne(userCred.email);
+        if (!user) {
+            user = await this.usersService.create(userCred);
         }
+        const token = sign({ user }, process.env.JWT_SECRET);
+        return { user, token }
     }
 
-    async register(@Body() userCred: CreateUserDto){
-        try {
-            let user = await this.usersService.findOne(userCred.email);
-            console.log({userCred, user});
-            if (!user) {
+    async register(userCred: CreateUserDto){
 
-                const hashedPassword = await hash(userCred.password, hashSalts);
-                user = await this.usersService.create({...userCred, password: hashedPassword});
+        let user = await this.usersService.findOne(userCred.email);
 
-                return {
-                    message: 'user registered successfully',
-                    data: user
-                }
-            } else {
-                return { message: 'User already registered'}
-            }
+        if(user) throw new ConflictException('user already registerd!')
 
-        } catch(err) {
-            return {
-                message: 'there was some error',
-                data: err,
-            }
-        }
+        const hashedPassword = await hash(userCred.password, hashSalts);
+        user = await this.usersService.create({ ...userCred, password: hashedPassword });
+
     }
 }

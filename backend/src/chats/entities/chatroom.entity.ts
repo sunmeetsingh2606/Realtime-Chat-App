@@ -6,8 +6,8 @@ export type ChatroomDocument = HydratedDocument<Chatroom>;
 
 @Schema({ timestamps: true })
 export class Chatroom {
-    @Prop({ type: String, default: null })
-    isGroup: string;
+    @Prop({ type: Boolean, default: false })
+    isGroup: boolean;
 
     @Prop({ type: String, default: null })
     groupName: string;
