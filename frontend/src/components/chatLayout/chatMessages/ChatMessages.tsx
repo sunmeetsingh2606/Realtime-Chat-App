@@ -108,7 +108,7 @@ const ChatMessages: FC<ChatMessagesProps> = ({ className }) => {
                             </p>
                             </div>
                             <ul className='flex gap-[-4px]'>
-                            { chatMessage?.reactions && chatMessage?.reactions.map(r => <li>{r}</li>)}
+                            { chatMessage?.reactions && chatMessage?.reactions.map((r, index) => <li key={index}>{r}</li>)}
                             </ul>
                         </div>
 
@@ -120,7 +120,9 @@ const ChatMessages: FC<ChatMessagesProps> = ({ className }) => {
                             {/** container to show all reactions */}
                             <ul className='hidden group-focus-within:grid rounded-md min-w-[150px] absolute top-full -left-12 z-10 gap-1 grid-cols-5 p-2 bg-secondary'>
                                 {
-                                    reactions.map(r => <li className='hover:scale-125 transition-all duration-100'>{r}</li>)
+                                    reactions.map((r, index) => <li 
+                                    key={index} 
+                                    className='hover:scale-125 transition-all duration-100'>{r}</li>)
                                 }
                             </ul>
                         </button>

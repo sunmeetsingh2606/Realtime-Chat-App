@@ -28,6 +28,7 @@ const ChatsListItem: FC<ChatsListItemProps> = ({ chat }) => {
     const user= useSelector((state:RootState) => state.user.user)
 
     let activeChatUser: User | undefined;
+    if(chat)
     chat.users.map(u => {
         if(user?._id !== u._id) activeChatUser = u;
     } )
