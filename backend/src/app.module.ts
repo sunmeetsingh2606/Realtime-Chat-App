@@ -6,9 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { ApiResponseInterceptor } from './shared/interceptors/api-response.interceptor';
-import { ChatroomsModule } from './chatrooms/chatrooms.module';
-import { ChatroomMessagesModule } from './chatroom-messages/chatroom-messages.module';
-import { AuthModule } from './auth/auth.module';
+import { ChatsModule } from './chats/chats.module';
 
 @Module({
     imports: [
@@ -24,9 +22,7 @@ import { AuthModule } from './auth/auth.module';
             inject: [ConfigService],
         }),
         UsersModule,
-        ChatroomsModule,
-        ChatroomMessagesModule,
-        AuthModule,
+        ChatsModule,
     ],
     controllers: [AppController],
     providers: [
