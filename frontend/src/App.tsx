@@ -7,13 +7,12 @@ import { addUser } from './Redux/User/userSlice';
 import { useDispatch } from 'react-redux';
 
 
-
 function App() {
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
 
+    useEffect(() => {
         authenticateToken();
         return () => { }
     }, [])
@@ -26,7 +25,6 @@ function App() {
             const res = await fetch(`${import.meta.env.VITE_API_ADDRESS}/auth/authenticate/?token=${token}`);
             const data = await res.json();
             
-            console.log({ data });
 
             if (data.data.user) {
                 dispatch(addUser({ user: data.data.user }));

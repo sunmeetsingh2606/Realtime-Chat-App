@@ -44,7 +44,6 @@ const ChatLayout: FC = () => {
         const token = localStorage.getItem('token');
         if(token){
             const res = await findAllChatRooms(token);
-            console.log({res});
             setChatRooms(res.data);
         }
     }
