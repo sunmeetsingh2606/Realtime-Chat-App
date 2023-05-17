@@ -2,7 +2,6 @@ import { FC } from 'react';
 import { BiSearch } from 'react-icons/bi';
 import { IoCall } from 'react-icons/io5';
 import { signout } from '../../../firebase/firebaseUtils';
-import { IChatListItem } from '../../../interfaces/chatListItem';
 import { User } from '../../../interfaces/User';
 import { IChatroom } from '../../../interfaces/chatRoom';
 import { useSelector } from 'react-redux';
@@ -26,8 +25,8 @@ const ChatHeader: FC<ChatHeaderProps> = ({ chat }) => {
         <div className="flex flex-row items-center">
            {
             activeChatUser?.photoURL ?
-            <img src={activeChatUser?.photoURL } className='w-[50px] mr-3 h-[50px] rounded-full' alt='avatar'/> :
-            <Avatar name={activeChatUser?.displayName || ""} className="rounded-full" size="50" />
+            <img src={ activeChatUser?.photoURL } className='w-[50px] mr-3 h-[50px] rounded-full' alt='avatar'/> :
+            <Avatar name={activeChatUser?.displayName || ""} className="rounded-full mr-3" size="50" />
            }
             <div className="flex-grow">
                 <p className="text-xl text-slate-200">{activeChatUser?.displayName}</p>

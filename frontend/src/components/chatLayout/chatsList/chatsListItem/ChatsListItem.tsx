@@ -1,6 +1,5 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Avatar from 'react-avatar';
-import { IChatListItem } from '../../../../interfaces/chatListItem';
 import classNames from 'classnames';
 import { motion } from 'framer-motion';
 import { IChatroom } from '../../../../interfaces/chatRoom';
@@ -26,12 +25,19 @@ const chatListItemVariant = {
 const ChatsListItem: FC<ChatsListItemProps> = ({ chat }) => {
 
     const user= useSelector((state:RootState) => state.user.user)
+    const [activeChatUser, setActiveChatUser] = useState<User | null>(null);
+    
 
-    let activeChatUser: User | undefined;
-    if(chat)
-    chat.users.map(u => {
-        if(user?._id !== u._id) activeChatUser = u;
-    } )
+    useEffect(() => {
+
+        //const activeUser = 
+        setActiveChatUser(chat.users.find((u) => u._id !== user?._id) || null);
+
+      return () => {
+        
+      }
+    }, [])
+    
 
     return (
         <motion.div
@@ -45,9 +51,9 @@ const ChatsListItem: FC<ChatsListItemProps> = ({ chat }) => {
         >
             <div className="flex flex-row items-center gap-2">
                 {
-                    activeChatUser?.photoURL ? 
-                    <img src={activeChatUser.photoURL} className='w-[50px] h-[50px] rounded-full' alt='avatar'/> :
-                    <Avatar name={activeChatUser?.displayName} className="rounded-normal" size="50" />
+                    activeChatUser?.photoURL ?
+                    <img src={ activeChatUser?.photoURL } className='w-[50px] h-[50px] rounded-full' alt='avatar'/> :
+                    <Avatar name={activeChatUser?.displayName || ""} className="rounded-full " size="50" />
                 }
                 <div className="flex-grow">
                     <p className="text-slate-200">{activeChatUser?.displayName}</p>

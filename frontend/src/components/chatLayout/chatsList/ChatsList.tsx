@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import ChatsListItem from './chatsListItem/ChatsListItem';
-import { IChatListItem } from '../../../interfaces/chatListItem';
 import { motion, } from 'framer-motion';
 import { IChatroom } from '../../../interfaces/chatRoom';
 const chatListContainerVariant = {
@@ -13,9 +12,10 @@ const chatListContainerVariant = {
 
 interface ChatsListProps {
     chats: IChatroom[];
+    onClick:(chat:IChatroom) => void
 }
 
-const ChatsList: FC<ChatsListProps> = ({ chats }) => {
+const ChatsList: FC<ChatsListProps> = ({ chats, onClick }) => {
     return (
         <>
             <motion.div 
@@ -24,7 +24,9 @@ const ChatsList: FC<ChatsListProps> = ({ chats }) => {
             animate="show"
             className="flex flex-col gap-2">
                 {chats.map((chat) => {
-                    return <ChatsListItem key={chat._id} chat={chat} />;
+                    return <div key={chat._id} onClick={() => onClick(chat)}>
+                        <ChatsListItem  chat={chat} />
+                    </div>;
                 })}
             </motion.div>
         </>

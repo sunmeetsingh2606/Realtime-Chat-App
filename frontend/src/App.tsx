@@ -1,7 +1,7 @@
 import ChatLayout from './layouts/chatLayout/ChatLayout';
 import { useEffect } from 'react';
 import Login from './Pages/Login';
-import SignUp from './Pages/SignUp';
+import Register from './Pages/Register';
 import { Routes, Route } from 'react-router-dom';
 import { addUser } from './Redux/User/userSlice';
 import { useDispatch } from 'react-redux';
@@ -41,7 +41,7 @@ function App() {
             <Routes>
                 <Route path='/' element={<ChatLayout />} />
                 <Route path='/login' element={<Login />} />
-                <Route path='/signUp' element={<SignUp />} />
+                <Route path='/signUp' element={<Register />} />
             </Routes>
         </>
     );

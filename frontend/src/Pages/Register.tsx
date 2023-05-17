@@ -17,7 +17,7 @@ interface formDataType {
 }
 
 
-function SignUp() {
+function Register() {
 
     const user = useSelector((state:RootState) => state.user.user);
     const navigate = useNavigate();
@@ -45,8 +45,9 @@ function SignUp() {
         }
 
         const res = await register(formData);
-        if(res.data.err) throw res.data.err;
+        //if(res.data.err) throw res.data.err;
 
+        console.log({res});
         alert(res.msg);
 
     }
@@ -162,4 +163,4 @@ function SignUp() {
     )
 }
 
-export default SignUp
+export default Register

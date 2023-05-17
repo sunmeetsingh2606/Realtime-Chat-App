@@ -3,7 +3,6 @@ import ChatHeader from '../../components/chatLayout/chatHeader/ChatHeader';
 import ChatMessages from '../../components/chatLayout/chatMessages/ChatMessages';
 import ChatsList from '../../components/chatLayout/chatsList/ChatsList';
 import TextField from '../../components/forms/textField/TextField';
-import { IChatListItem } from '../../interfaces/chatListItem';
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { RootState } from '../../Redux/store';
@@ -17,51 +16,9 @@ import { IChatroom } from '../../interfaces/chatRoom';
 const ChatLayout: FC = () => {
 
     const user = useSelector((state: RootState) => state.user.user)
-    const [chatrooms, setChatRooms] = useState<IChatroom[]>([]);
+    const [chatrooms, setChatRooms] = useState<IChatroom[]>();
+    const [activeChat, setActiveChat] = useState<IChatroom>();
     const navigate = useNavigate();
-    // const chats: IChatListItem[] = [
-    //     {
-    //         uid: "user1",
-    //         photoURL: "https://avatars.dicebear.com/api/initials/John Doe.svg",
-    //         displayName: "John Doe",
-    //         lastMessage: "Hey, how are you doing?",
-    //         isActive: true,
-    //         isOnline: false
-    //     },
-    //     {
-    //         uid: "user2",
-    //         photoURL: "https://avatars.dicebear.com/api/initials/Jane Smith.svg",
-    //         displayName: "Jane Smith",
-    //         lastMessage: "I'll be there in 10 minutes.",
-    //         isActive: false,
-    //         isOnline: true
-    //     },
-    //     {
-    //         uid: "user3",
-    //         photoURL: "https://avatars.dicebear.com/api/initials/Bob Johnson.svg",
-    //         displayName: "Bob Johnson",
-    //         lastMessage: "What's up?",
-    //         isActive: false,
-    //         isOnline: true
-    //     },
-    //     {
-    //         uid: "user4",
-    //         photoURL: "https://avatars.dicebear.com/api/initials/Samantha Lee.svg",
-    //         displayName: "Samantha Lee",
-    //         lastMessage: "Can we meet tomorrow?",
-    //         isActive: false,
-    //         isOnline: false
-    //     },
-    //     {
-    //         uid: "user5",
-    //         photoURL: "https://avatars.dicebear.com/api/initials/Mike Williams.svg",
-    //         displayName: "Mike Williams",
-    //         lastMessage: "See you soon!",
-    //         isActive: false,
-    //         isOnline: true
-    //     }
-    // ];
-
 
     async function handleSignOutClick() {
         // Implement your sign out logic here
@@ -70,8 +27,6 @@ const ChatLayout: FC = () => {
         
     }
 
-
-    const activeChat = chatrooms[0];
 
     useEffect(() => {
 
@@ -91,10 +46,12 @@ const ChatLayout: FC = () => {
             const res = await findAllChatRooms(token);
             console.log({res});
             setChatRooms(res.data);
-            chatrooms[0].isActive = true;
         }
     }
 
+    const changeActiveChat = (chat:IChatroom) => {
+        setActiveChat(chat);
+    }
 
     return (
         <div className="grid grid-cols-12 h-full">
@@ -125,16 +82,22 @@ const ChatLayout: FC = () => {
 
                 </div>
                 <TextField className="w-full" placeholder="Search" />
-                <ChatsList chats={chatrooms} />
+                { chatrooms && <ChatsList onClick={changeActiveChat} chats={chatrooms}/>}
             </div>
             <div className="col-span-9 max-h-screen overflow-hidden bg-primary rounded-normal flex flex-col p-4">
-                <div className='sticky top-0 right-0 z-10'>
-                    <ChatHeader chat={activeChat} />
-                </div>
-                <ChatMessages className="flex-grow max-h-full overflow-y-scroll pr-2 flex flex-col justify-end gap-2 py-4" />
-                <div className='sticky bottom-0 z-10'>
-                <ChatFooter />
-                </div>
+                {
+                    activeChat && (
+                        <>
+                        <div className='sticky top-0 right-0 z-10'>
+                            <ChatHeader chat={activeChat} />
+                        </div>
+                         <ChatMessages className="flex-grow max-h-full overflow-y-scroll pr-2 flex flex-col justify-end gap-2 py-4" />
+                        <div className='sticky bottom-0 z-10'>
+                            <ChatFooter />
+                        </div>  
+                        </>
+                    )
+                }
             </div>
         </div>
     );
