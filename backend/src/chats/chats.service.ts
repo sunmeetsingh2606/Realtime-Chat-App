@@ -27,7 +27,7 @@ export class ChatsService {
   }
 
   async findAll(id: string) {
-    const userChatRooms = await this.chatroomModel.find({ users: id }).populate("users", "displayName email photoURL");
+    const userChatRooms = await this.chatroomModel.find({ users: { $in: id } }).populate("users", "displayName email photoURL");
     return userChatRooms
 
   }

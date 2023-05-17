@@ -22,13 +22,11 @@ export class ChatsController {
   /**
    * 
    * @param user
-   * @returns all rooms which have that id in it
+   * @returns all rooms which have that user in it
    */
 
   @Get()
   async findAll(@User() user: IRequestUser){
-    console.log(user._id)
-    //console.log({user: res.locals.user});
     const userChatrooms = await this.chatsService.findAll(user._id);
 
     return {
