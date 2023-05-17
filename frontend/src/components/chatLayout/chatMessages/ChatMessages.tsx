@@ -11,7 +11,7 @@ interface ChatMessagesProps {
 }
 
 const ChatMessages: FC<ChatMessagesProps> = ({ className }) => {
-    const reactions = ['😂','😂','😂','😂','😂',];
+    //const reactions = ['😂','😂','😂','😂','😂',];
     const [chatMessages, setChatMessages] = useState<any>([])
     //const user = useSelector((state: RootState) => state.user.user);
 
@@ -22,7 +22,6 @@ const ChatMessages: FC<ChatMessagesProps> = ({ className }) => {
         //call back function to update the state
          const updateMessages = (messages: any) => {
             setChatMessages(messages);
-            console.log({messages})
          }
          listenToMessages(updateMessages);
     }, [])

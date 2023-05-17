@@ -43,16 +43,12 @@ function Login() {
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const res = await login(email, password);
-        //if(res.data.err) throw res.data.err;
-        console.log(res);
         alert(res.msg);
 
         if(res.data.user){
-            console.log({user: res.data.user})
             dispatch(addUser({ user: res.data.user}))
             localStorage.setItem('token',res.data.token);
         }
-        // Submit the email and password data to the backend for authentication
     };
 
 

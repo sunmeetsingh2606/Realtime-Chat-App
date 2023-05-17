@@ -19,6 +19,7 @@ export const auth = getAuth(app);
 export const signInwithGoogle = async () => {
     try {
       const userCreds =  await signInWithPopup(auth, provider).catch(err => { throw err });
+
       if(userCreds.user){
         const user = userCreds.user;
         const res = await fetch(`${import.meta.env.VITE_API_ADDRESS}/auth/loginWithGoogle`, {
@@ -35,7 +36,6 @@ export const signInwithGoogle = async () => {
             })
         });
         const data = await res.json();
-        console.log({res, data})
 
         return data;
       }

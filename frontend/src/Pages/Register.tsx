@@ -38,16 +38,13 @@ function Register() {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        console.log({formData})
         if(formData.password !== formData.confirmPassword) {
             alert("Passwords dont match");
             return
         }
 
         const res = await register(formData);
-        //if(res.data.err) throw res.data.err;
 
-        console.log({res});
         alert(res.msg);
 
     }

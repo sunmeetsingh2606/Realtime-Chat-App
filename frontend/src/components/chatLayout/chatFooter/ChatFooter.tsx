@@ -11,6 +11,11 @@ const ChatFooter = () => {
         setMessage(e.target.value);
     }
 
+    const send = () => {
+        sendMessage(message);
+        setMessage('');
+    }
+
 
     return (
         <div className="flex flex-row items-center gap-1">
@@ -19,9 +24,10 @@ const ChatFooter = () => {
             </PrimaryButton>
             <TextField
              onChange={onChange}
+             value={message}
              className="flex-grow" 
              placeholder="Your message" />
-            <PrimaryButton onClick={() => sendMessage(message)}>
+            <PrimaryButton onClick={() => send()}>
                 <ImMic color="white" />
             </PrimaryButton>
         </div>
