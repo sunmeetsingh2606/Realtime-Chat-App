@@ -1,7 +1,9 @@
-import { Body, Controller, Get, Post, Param, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, Query, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
+import { AuthGuard } from 'src/shared/guards/auth.guard';
+import { IRequestUser, User } from 'src/shared/decorators/auth-user.decorator';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -15,9 +17,10 @@ export class AuthController {
         }
     }
     
+    @UseGuards(AuthGuard)
     @Get('authenticate')
-    async authenticate(@Query('token') token: string){
-        const authenticate = await this.authService.authenticate(token);
+    async authenticate(@User() user:IRequestUser){
+        const authenticate = await this.authService.authenticate(user._id);
         return {
             message: 'Token verified',
             data: authenticate

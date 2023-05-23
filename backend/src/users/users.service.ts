@@ -30,6 +30,11 @@ export class UsersService {
         return user;
     }
 
+    async findOneById(id: string){
+        const user = await this.userModel.findOne({ _id: id });
+        return user
+    }
+
     update(id: number, updateUserDto: UpdateUserDto) {
         return `This action updates a #${id} user`;
     }
