@@ -32,7 +32,7 @@ export class AuthService {
     async authenticate(id: string ){
 
         const user = await this.usersService.findOneById(id);
-        return user
+        return { user }
         
     }
 

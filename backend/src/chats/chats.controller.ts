@@ -35,14 +35,17 @@ export class ChatsController {
     }
   }
 
-  @Get('/findAllRooms')
-  async findAllRooms() {
-    const rooms = await this.chatsService.findAllRooms();
+
+  @Get('messages/:id')
+  async findChatRoomMessages(@Param('id') chatRoomId: string){
+    const messages = await this.chatsService.findRoomChatMessages(chatRoomId);
     return {
-        message: 'All Rooms',
-        data: rooms
+        message: "Chat room messages!",
+        data: messages
     }
+
   }
+
   //return 1 room with corresponding id
   @Get(':id')
   async findOne(@Param('id') id: string) {
