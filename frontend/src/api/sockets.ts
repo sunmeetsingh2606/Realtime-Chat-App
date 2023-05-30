@@ -1,16 +1,17 @@
 import { io } from 'socket.io-client';
+import { IChatMessage } from '../interfaces/chatMessage';
 
 const socket = io(`${import.meta.env.VITE_API_ADDRESS}`);
 
-export function listenToMessages(fun: (messages: any) => void){
+export function listenToMessages(callbackFunction: (messages: IChatMessage) => void){
     socket.on('message', (data) => {
         
-        fun(data);
+        callbackFunction(data);
 
     });
 
 }
 
-export function sendMessage(message:string) {
+export function sendMessage(message: IChatMessage) {
     socket.emit('message', message);
 }

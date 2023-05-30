@@ -5,6 +5,7 @@ import { FC, useEffect, useState } from 'react';
 // import { RootState } from '../../../Redux/store';
 // import { useSelector } from 'react-redux';
 import { listenToMessages } from '../../../api/sockets';
+import { IChatMessage } from '../../../interfaces/chatMessage';
 
 interface ChatMessagesProps {
     className?: string;
@@ -12,7 +13,7 @@ interface ChatMessagesProps {
 
 const ChatMessages: FC<ChatMessagesProps> = ({ className }) => {
     //const reactions = ['😂','😂','😂','😂','😂',];
-    const [chatMessages, setChatMessages] = useState<any>([])
+    const [chatMessages, setChatMessages] = useState<IChatMessage[]>([])
     //const user = useSelector((state: RootState) => state.user.user);
 
 
@@ -20,8 +21,8 @@ const ChatMessages: FC<ChatMessagesProps> = ({ className }) => {
 
     useEffect(() => {
         //call back function to update the state
-         const updateMessages = (messages: any) => {
-            setChatMessages(messages);
+         const updateMessages = (messages: IChatMessage) => {
+            setChatMessages([...chatMessages, messages]);
          }
          listenToMessages(updateMessages);
     }, [])
