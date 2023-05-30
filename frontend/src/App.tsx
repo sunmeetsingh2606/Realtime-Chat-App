@@ -22,10 +22,14 @@ function App() {
         const token = localStorage.getItem('token')
 
         if (token) {
-            const res = await fetch(`${import.meta.env.VITE_API_ADDRESS}/auth/authenticate/?token=${token}`);
+            const res = await fetch(`${import.meta.env.VITE_API_ADDRESS}/auth/authenticate`, {
+                method: 'GET',
+                headers: {
+                    'authorization': `Bearer ${token}`
+                }
+            });
             const data = await res.json();
             
-
             if (data.data.user) {
                 dispatch(addUser({ user: data.data.user }));
             }
