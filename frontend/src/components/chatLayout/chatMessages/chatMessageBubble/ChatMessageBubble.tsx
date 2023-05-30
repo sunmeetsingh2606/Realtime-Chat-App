@@ -14,7 +14,7 @@ const ChatMessageBubble: FC<ChatMessageBubbleProps> = ({
     return (
         <div
             className={classNames(
-                ' rounded-normal p-2 transition-all duration-300 origin-left flex gap-3 overflow-visible items-center w-fit max-w-sm min-h-[50px] group',
+                ' rounded-normal p-2 transition-all duration-300 origin-left flex gap-3 overflow-visible items-center w-fit max-w-sm max-h-[100px] group',
                 {
                     'bg-accent ml-auto': isSender,
                 },

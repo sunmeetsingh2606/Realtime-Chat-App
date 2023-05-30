@@ -90,7 +90,7 @@ const ChatLayout: FC = () => {
                         <div className='sticky top-0 right-0 z-10'>
                             <ChatHeader chat={activeChat} />
                         </div>
-                         <ChatMessages chatroomId = { activeChat._id } className="flex-grow max-h-full overflow-y-scroll pr-2 flex flex-col justify-end gap-2 py-4" />
+                         <ChatMessages chatroomId = { activeChat._id } className="flex-grow h-full overflow-y-scroll pr-2 flex flex-col justify-end gap-2 py-4" />
                         <div className='sticky bottom-0 z-10'>
                             <ChatFooter  chat={activeChat}/>
                         </div>  

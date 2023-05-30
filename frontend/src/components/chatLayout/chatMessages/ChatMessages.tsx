@@ -2,11 +2,12 @@ import classNames from 'classnames';
 import { FC, useEffect, useState } from 'react';
 // import ChatMessageBubble from './chatMessageBubble/ChatMessageBubble';
 // import { BiDotsHorizontal }from 'react-icons/bi';
-// import { RootState } from '../../../Redux/store';
-// import { useSelector } from 'react-redux';
+import { RootState } from '../../../Redux/store';
+import { useSelector } from 'react-redux';
 import { listenToMessages } from '../../../api/sockets';
 import { IChatMessage } from '../../../interfaces/chatMessage';
 import { findAllChatRoomMessages } from '../../../api/chat';
+import ChatMessageBubble from './chatMessageBubble/ChatMessageBubble';
 
 interface ChatMessagesProps {
     className?: string;
@@ -17,7 +18,7 @@ const ChatMessages: FC<ChatMessagesProps> = ({ className, chatroomId }) => {
     //const reactions = ['😂','😂','😂','😂','😂',];
     const [chatMessages, setChatMessages] = useState<IChatMessage[]>([]);
     const [loading, setLoading] = useState(false);
-
+    const user = useSelector((state: RootState) => state.user.user )
 
     const fetchRoomMessages = async () => {
         setLoading(true);
@@ -45,14 +46,17 @@ const ChatMessages: FC<ChatMessagesProps> = ({ className, chatroomId }) => {
 
     if(loading)
     return (
-        <div>Loading...</div>
+        <div className={classNames(className)}>Loading...</div>
     )
 
     return (
         <div className={classNames(className)}>
             {
                 chatMessages && chatMessages.map((message) => (
-                    <p key={message._id}>{message.message}</p>
+                    <ChatMessageBubble 
+                    isSender={ user?._id === message.senderUser }>
+                        <p>{ message.message }</p>
+                    </ChatMessageBubble>
                 ))
             }
         </div>

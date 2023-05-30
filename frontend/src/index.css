@@ -4,6 +4,15 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.sent {
+    @apply ml-auto bg-accent
+}
+
+.received {
+    @apply bg-secondary-emphasis
+}
+
 * {
     color: white;
     font-family: 'Archivo', sans-serif;
