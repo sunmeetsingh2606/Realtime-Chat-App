@@ -7,11 +7,14 @@ import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { RootState } from '../../Redux/store';
 import { useSelector } from 'react-redux/es/exports';
+import { AiOutlinePlus } from 'react-icons/ai';
 import { IoEllipsisVertical } from 'react-icons/io5';
 import { signout } from '../../firebase/firebaseUtils';
+import { GoSignOut } from 'react-icons/go';
 import Avatar from 'react-avatar';
 import { findAllChatRooms } from '../../api/chat';
 import { IChatroom } from '../../interfaces/chatRoom';
+import Modal from '../../components/Modal/Modal';
 
 const ChatLayout: FC = () => {
 
@@ -52,6 +55,7 @@ const ChatLayout: FC = () => {
         setActiveChat(chat);
     }
 
+
     return (
         <div className="grid grid-cols-12 h-full">
             <div className="col-span-3 flex flex-col gap-2 p-4">
@@ -66,19 +70,28 @@ const ChatLayout: FC = () => {
                     </div>
                     {/** chatlist dropdown menu */}
                     {/** elements wont take focus unless they are a,input etc or have a tabindex */}
-                    <div tabIndex={1} className='group relative cursor-pointer'>
-                        <IoEllipsisVertical className='text-slate-300 text-3xl' />
-                        <div className='absolute scale-0 transition-all duration-200 -translate-x-2 origin-top-right invisible  group-focus-within:visible group-focus-within:scale-100 top-full right-0 mt-1 bg-primary py-2 w-48 rounded-lg shadow-lg z-10'>
-                            <button
-                                className='w-full text-left hover:bg-secondary-emphasis px-4 py-2 '
+                    <div className='dropdown dropdown-end'>
+                        <IoEllipsisVertical tabIndex={0} className='text-slate-300 text-3xl cursor-pointer' />
+                        <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                            <li>
+                                <label htmlFor='new-chat-modal' className='flex items-center justify-start'>
+                                    <AiOutlinePlus size={25} />
+                                    New Chat
+                                </label>
+                            </li>
+                            <li>
+                                <button 
                                 onClick={handleSignOutClick}
-                            >
-                                Sign out
-                            </button>
-                        </div>
+                                className='flex items-center justify-start'>
+                                    <GoSignOut size={25} />
+                                    Sign out
+                                </button>
+                            </li>
+                        </ul>
                     </div>
-
-
+                    <Modal id='new-chat-modal'>
+                        <h1>hello there</h1>
+                    </Modal>                
                 </div>
                 <TextField className="w-full" placeholder="Search" />
                 { chatrooms && <ChatsList onClick={changeActiveChat} chats={chatrooms}/>}

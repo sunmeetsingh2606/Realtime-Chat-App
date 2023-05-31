@@ -15,7 +15,7 @@ const PrimaryButton: FC<PrimaryButtonProps> = ({ className, children, type, onCl
             type={type}
             onClick={onClick}
             className={classNames(
-                'p-2 rounded-normal transition-all duration-300 hover:bg-secondary-emphasis',
+                'btn-primary',
                 className,
             )}
         >

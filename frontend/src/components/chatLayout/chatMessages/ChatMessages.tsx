@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { listenToMessages } from '../../../api/sockets';
 import { IChatMessage } from '../../../interfaces/chatMessage';
 import { findAllChatRoomMessages } from '../../../api/chat';
+import { ClipLoader } from 'react-spinners';
 import ChatMessageBubble from './chatMessageBubble/ChatMessageBubble';
 
 interface ChatMessagesProps {
@@ -46,7 +47,9 @@ const ChatMessages: FC<ChatMessagesProps> = ({ className, chatroomId }) => {
 
     if(loading)
     return (
-        <div className={classNames(className)}>Loading...</div>
+        <div className={classNames(className, 'flex items-center justify-center')}>
+           <ClipLoader color='#6b8afd' className='text-accent'/>
+        </div>
     )
 
     return (

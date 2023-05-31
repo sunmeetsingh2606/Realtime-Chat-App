@@ -24,3 +24,10 @@ export const findAllChatRoomMessages = async (roomId: string) => {
     const data = await response.json();
     return data;
 }
+
+const fetchUsers = async () => {
+
+    const res = await fetch(`${ import.meta.env.VITE_API_ADDRESS }/users`);
+    const data = await res.json();
+    return data;
+}
