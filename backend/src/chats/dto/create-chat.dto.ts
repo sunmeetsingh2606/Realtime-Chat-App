@@ -10,6 +10,6 @@ export class CreateChatDto {
     @ValidateIf( chatroom => chatroom.isGroup === true)
     groupName: string
 
-    @ArrayMinSize(2)
+    @ArrayMinSize(1)
     users: string[]
 }

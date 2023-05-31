@@ -11,7 +11,7 @@ export class ChatsService {
 
     constructor(@InjectModel(Chatroom.name) private chatroomModel: Model<Chatroom>, @InjectModel(ChatroomMessage.name) private readonly chatroomMessageModel: Model<ChatroomMessage>){}
     
-  async create(createChatDto: CreateChatDto) {
+  async create(createChatDto: CreateChatDto, userId: string) {
 
 
     //if chatroom with both users exists and it is not group chat then dont 
@@ -19,7 +19,9 @@ export class ChatsService {
     const chatRooms = await this.findOneRoomWithAllUsers( createChatDto.users );
     if(chatRooms && !chatRooms.isGroup) throw new ConflictException('Room already exists');
     
-    const newChatRoom = await new this.chatroomModel(createChatDto);
+    const newChatRoom = await new this.chatroomModel({
+        users: [...createChatDto.users, userId]
+    });
     newChatRoom.save();
 
     return newChatRoom
