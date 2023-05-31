@@ -12,15 +12,20 @@ import { IoEllipsisVertical } from 'react-icons/io5';
 import { signout } from '../../firebase/firebaseUtils';
 import { GoSignOut } from 'react-icons/go';
 import Avatar from 'react-avatar';
-import { findAllChatRooms } from '../../api/chat';
+import { createNewChatRoom, fetchUsers, findAllChatRooms } from '../../api/chat';
 import { IChatroom } from '../../interfaces/chatRoom';
 import Modal from '../../components/Modal/Modal';
+import { User } from '../../interfaces/User';
+import classNames from 'classnames';
 
 const ChatLayout: FC = () => {
 
     const user = useSelector((state: RootState) => state.user.user)
     const [chatrooms, setChatRooms] = useState<IChatroom[]>();
     const [activeChat, setActiveChat] = useState<IChatroom>();
+    const [allUsers, setAllUsers] = useState<User[]>()
+    const [selectedUser, setSelectedUser] = useState<User>();
+
     const navigate = useNavigate();
 
     async function handleSignOutClick() {
@@ -37,7 +42,7 @@ const ChatLayout: FC = () => {
             navigate('/login');
         }
         fetchAllChatRooms();
-
+        fetchAllusers();
         return () => {
 
         }
@@ -55,6 +60,21 @@ const ChatLayout: FC = () => {
         setActiveChat(chat);
     }
 
+
+    const fetchAllusers = async() => {
+        const data = await fetchUsers();
+        setAllUsers(data.data);
+    }
+
+    const newChatRoom = async () => {
+        if(!selectedUser) {
+            alert('user not selected')
+            return
+        }
+
+        const data = await createNewChatRoom(selectedUser._id);
+        alert(`${data.msg}`);
+    }
 
     return (
         <div className="grid grid-cols-12 h-full">
@@ -88,14 +108,37 @@ const ChatLayout: FC = () => {
                                 </button>
                             </li>
                         </ul>
-                    </div>
-                    <Modal id='new-chat-modal'>
-                        <h1>hello there</h1>
-                    </Modal>                
+                    </div>              
                 </div>
                 <TextField className="w-full" placeholder="Search" />
                 { chatrooms && <ChatsList onClick={changeActiveChat} chats={chatrooms}/>}
             </div>
+
+            <Modal id='new-chat-modal'>
+                <ul className='grid grid-cols-5 items-start justify-center place-items-center gap-5 text-center'>
+                {
+                    allUsers && allUsers.map((user) => (
+                        <li
+                        onClick={() => { setSelectedUser(user) }}
+                        className={ classNames('flex flex-col items-center cursor-pointer  p-3 rounded-md gap-3 hover:bg-primary justify-center', {
+                            'bg-primary': selectedUser && (selectedUser._id === user._id)
+                        })}>
+                            { user.photoURL ? 
+                            <img src={user?.photoURL} className='w-[50px] h-[50px] rounded-full' alt='avatar' /> :
+                            <Avatar name={user?.displayName || ""} className="rounded-full" size="50" /> }
+                            <p>{ user.displayName }</p>
+                        </li>
+                    ))
+                }
+                </ul>
+                <div className="modal-action">
+                    <label 
+                    onClick={newChatRoom}
+                    htmlFor="new-chat-modal" className="btn btn-primary">Create Chat</label>
+                </div>
+            </Modal>  
+
+
             <div className="col-span-9 max-h-screen overflow-hidden bg-primary rounded-normal flex flex-col p-4">
                 {
                     activeChat && (

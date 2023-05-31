@@ -1,6 +1,6 @@
 
 
-import React, { FC, ReactNode } from 'react'
+import { FC, ReactNode, useEffect } from 'react'
 
 interface ModalProps {
     id: string,
@@ -11,6 +11,13 @@ interface ModalProps {
 const Modal:FC<ModalProps> = ({ id, children  }) => {
 
 
+    useEffect(() => {
+      
+    
+      return () => {
+      }
+    }, [])
+    
 
 
     return (
