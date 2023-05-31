@@ -11,7 +11,7 @@ const TextField: FC<TextFieldProps> = ({ className, ...props }) => {
             <input
                 type="text"
                 className={classNames(
-                    'bg-secondary-emphasis rounded-normal border-none outline-none p-2',
+                    'input input-bordered w-full flex items-center justify-start gap-3',
                     className,
                 )}
                 {...props}

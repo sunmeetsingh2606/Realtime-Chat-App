@@ -37,18 +37,23 @@ const ChatFooter:FC<ChatFooterProps> = ({ chat }) => {
 
     return (
         <div className="flex flex-row items-center gap-1">
-            <PrimaryButton>
-                <ImAttachment color="white" />
-            </PrimaryButton>
-            <form className="flex-grow flex  w-full" onSubmit={send}>
-                <TextField
-                    onChange={onChange}
-                    value={message}
-                    className='flex-grow'
-                    placeholder="Your message" />
-                <PrimaryButton type='submit' >
-                    <IoSend color="white" />
+            <div className='aspect-square'>
+                <PrimaryButton>
+                        <ImAttachment />
                 </PrimaryButton>
+            </div>
+            <form className="flex-grow flex gap-1" onSubmit={send}>
+                <TextField 
+                onChange={onChange}
+                value={message}
+                type='text'
+                placeholder='Your message'
+                />
+                <div>
+                    <PrimaryButton type='submit'>
+                        <IoSend />
+                    </PrimaryButton>
+                </div>
             </form>
         </div>
     );

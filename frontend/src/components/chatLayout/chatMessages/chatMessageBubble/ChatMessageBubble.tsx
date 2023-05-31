@@ -14,14 +14,12 @@ const ChatMessageBubble: FC<ChatMessageBubbleProps> = ({
     return (
         <div
             className={classNames(
-                ' rounded-normal p-2 transition-all duration-300 origin-left flex gap-3 overflow-visible items-center w-fit max-w-sm max-h-[100px] group',
-                {
-                    'bg-accent ml-auto': isSender,
-                },
-                { 'bg-secondary-emphasis': !isSender },
+                `chat ${isSender ? 'chat-end' : 'chat-start'}`
             )}
         >
-            {children}
+           <div className={ classNames(`chat-bubble ${isSender ? "chat-bubble-secondary" : "bg-primary-accent"}`)}>
+           {children}
+           </div>
         </div>
     );
 };

@@ -15,7 +15,7 @@ const PrimaryButton: FC<PrimaryButtonProps> = ({ className, children, type, onCl
             type={type}
             onClick={onClick}
             className={classNames(
-                'btn-primary',
+                'btn btn-primary w-full',
                 className,
             )}
         >

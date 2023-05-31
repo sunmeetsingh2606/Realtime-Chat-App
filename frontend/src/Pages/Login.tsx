@@ -63,47 +63,25 @@ function Login() {
             <div className="w-full max-w-md p-6 bg-gray-800 rounded-lg shadow-xl">
                 <h1 className="text-2xl font-bold text-white mb-4">Login</h1>
                 <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
-                    <div className="">
-                        <label htmlFor="email" className="sr-only">
-                            Email
+                    <div className="form-control">
+                        <label className="input-group">
+                            <span><HiOutlineMail /></span>
+                            <TextField 
+                            onChange={handleEmailChange}
+                            type="email" 
+                            autoComplete="email"
+                            placeholder="JohnDoe@email.com" />
                         </label>
-                        <div className="relative">
-                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <HiOutlineMail className="h-5 w-5 text-gray-500" />
-                            </div>
-                            <TextField
-                                id="email"
-                                name="email"
-                                type="email"
-                                autoComplete="email"
-                                required
-                                className="block w-full pl-10 pr-3 py-2 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                                placeholder="Email"
-                                value={email}
-                                onChange={handleEmailChange}
-                            />
-                        </div>
                     </div>
-                    <div className="">
-                        <label htmlFor="password" className="sr-only">
-                            Password
+                    <div className="form-control">
+                        <label className="input-group">
+                            <span><RiLockPasswordLine /></span>
+                            <TextField 
+                            onChange={handlePasswordChange}
+                            type="password"
+                            autoComplete="current-password"
+                            placeholder="Password" />
                         </label>
-                        <div className="relative">
-                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <RiLockPasswordLine className="h-5 w-5 text-gray-500" />
-                            </div>
-                            <TextField
-                                id="password"
-                                name="password"
-                                type="password"
-                                autoComplete="current-password"
-                                required
-                                className="block w-full pl-10 pr-3 py-2 rounded-md bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                                placeholder="Password"
-                                value={password}
-                                onChange={handlePasswordChange}
-                            />
-                        </div>
                     </div>
                     <div className="text-sm">Don't have an Account?
                         <span className="underline cursor-pointer hover:font-bold">
@@ -113,14 +91,14 @@ function Login() {
                     <div className="flex flex-col gap-3 justify-between items-center mb-4">
                         <PrimaryButton
                             type="submit"
-                            className="w-full bg-indigo-500 hover:bg-indigo-600 py-2 px-4 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
                             Sign In
                         </PrimaryButton>
                         <PrimaryButton
                             onClick={() => handleSignInWithGoogle()}
                             type="button"
-                            className="flex gap-3 items-center justify-center w-full bg-red-500 hover:bg-red-600 py-2 px-4 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 ">
+                            className="btn-secondary flex gap-3 items-center justify-center"
+                        >
                             <FaGoogle /> Sign in With Google
                         </PrimaryButton>
                     </div>
