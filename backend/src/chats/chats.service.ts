@@ -20,6 +20,7 @@ export class ChatsService {
     if(chatRooms && !chatRooms.isGroup) throw new ConflictException('Room already exists');
     
     const newChatRoom = await new this.chatroomModel({
+        ...createChatDto,
         users: [...createChatDto.users, userId]
     });
     newChatRoom.save();

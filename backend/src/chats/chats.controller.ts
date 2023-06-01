@@ -11,6 +11,7 @@ export class ChatsController {
 
   @Post()
   async create(@Body() createChatDto: CreateChatDto, @User() user: IRequestUser) {
+    console.log({createChatDto, user});
     const createChatroom = await this.chatsService.create(createChatDto, user._id);
     return {
         message: "Chat Room created Successfully!",
