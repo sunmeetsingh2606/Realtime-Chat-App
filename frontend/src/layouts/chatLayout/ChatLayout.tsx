@@ -11,12 +11,15 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import { IoEllipsisVertical } from 'react-icons/io5';
 import { signout } from '../../firebase/firebaseUtils';
 import { GoSignOut } from 'react-icons/go';
+import { HiUserGroup } from 'react-icons/hi';
 import Avatar from 'react-avatar';
 import { createNewChatRoom, fetchUsers, findAllChatRooms } from '../../api/chat';
 import { IChatroom } from '../../interfaces/chatRoom';
 import Modal from '../../components/Modal/Modal';
 import { User } from '../../interfaces/User';
 import classNames from 'classnames';
+import Spinner from '../../components/Spinner/Spinner';
+
 
 const ChatLayout: FC = () => {
 
@@ -25,7 +28,7 @@ const ChatLayout: FC = () => {
     const [activeChat, setActiveChat] = useState<IChatroom>();
     const [allUsers, setAllUsers] = useState<User[]>()
     const [selectedUser, setSelectedUser] = useState<User>();
-
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     async function handleSignOutClick() {
@@ -42,7 +45,6 @@ const ChatLayout: FC = () => {
             navigate('/login');
         }
         fetchAllChatRooms();
-        fetchAllusers();
         return () => {
 
         }
@@ -62,8 +64,10 @@ const ChatLayout: FC = () => {
 
 
     const fetchAllusers = async() => {
+        setLoading(true);
         const data = await fetchUsers();
         setAllUsers(data.data);
+        setLoading(false);
     }
 
     const newChatRoom = async () => {
@@ -94,9 +98,18 @@ const ChatLayout: FC = () => {
                         <IoEllipsisVertical tabIndex={0} className='text-slate-300 text-3xl cursor-pointer' />
                         <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
                             <li>
-                                <label htmlFor='new-chat-modal' className='flex items-center justify-start'>
+                                <label 
+                                onClick={() => fetchAllusers()}
+                                htmlFor='new-chat-modal' 
+                                className='flex items-center justify-start'>
                                     <AiOutlinePlus size={25} />
                                     New Chat
+                                </label>
+                            </li>
+                            <li>
+                                <label htmlFor='group-chat-modal' className='flex items-center justify-start'>
+                                    <HiUserGroup size={25} />
+                                    Group Chat
                                 </label>
                             </li>
                             <li>
@@ -114,31 +127,40 @@ const ChatLayout: FC = () => {
                 { chatrooms && <ChatsList onClick={changeActiveChat} chats={chatrooms}/>}
             </div>
 
+            {/** new chat modal */}
             <Modal id='new-chat-modal'>
-                <ul className='grid grid-cols-5 items-start justify-center place-items-center gap-5 text-center'>
                 {
-                    allUsers && allUsers.map((user) => (
-                        <li
-                        onClick={() => { setSelectedUser(user) }}
-                        className={ classNames('flex flex-col items-center cursor-pointer  p-3 rounded-md gap-3 hover:bg-primary justify-center', {
-                            'bg-primary': selectedUser && (selectedUser._id === user._id)
-                        })}>
-                            { user.photoURL ? 
-                            <img src={user?.photoURL} className='w-[50px] h-[50px] rounded-full' alt='avatar' /> :
-                            <Avatar name={user?.displayName || ""} className="rounded-full" size="50" /> }
-                            <p>{ user.displayName }</p>
-                        </li>
-                    ))
+                loading ?
+                    <Spinner />
+                 :
+                <>
+                    <ul className='grid grid-cols-5 items-start justify-center place-items-center gap-5 text-center'>
+                        {
+                            allUsers && allUsers.map((user) => (
+                                <li
+                                    onClick={() => { setSelectedUser(user) }}
+                                    className={classNames('flex flex-col items-center cursor-pointer  p-3 rounded-md gap-3 hover:bg-primary justify-center', {
+                                        'bg-primary': selectedUser && (selectedUser._id === user._id)
+                                    })}>
+                                    {user.photoURL ?
+                                        <img src={user?.photoURL} className='w-[50px] h-[50px] rounded-full' alt='avatar' /> :
+                                        <Avatar name={user?.displayName || ""} className="rounded-full" size="50" />}
+                                    <p>{user.displayName}</p>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                    <div className="modal-action">
+                        <label
+                            onClick={newChatRoom}
+                            htmlFor="new-chat-modal" className="btn btn-primary">Create Chat
+                        </label>
+                    </div>
+                </>
                 }
-                </ul>
-                <div className="modal-action">
-                    <label 
-                    onClick={newChatRoom}
-                    htmlFor="new-chat-modal" className="btn btn-primary">Create Chat</label>
-                </div>
             </Modal>  
 
-
+            {/** chat section */}
             <div className="col-span-9 max-h-screen overflow-hidden bg-primary rounded-normal flex flex-col p-4">
                 {
                     activeChat && (

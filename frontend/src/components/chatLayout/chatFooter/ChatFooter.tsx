@@ -29,7 +29,8 @@ const ChatFooter:FC<ChatFooterProps> = ({ chat }) => {
         sendMessage({
             chatroom: chat._id,
             senderUser: user?._id,
-            message: message
+            message: message,
+            messageType: 'message'
         });
         setMessage('');
     }

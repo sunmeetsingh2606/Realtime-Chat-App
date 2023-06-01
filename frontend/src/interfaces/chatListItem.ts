@@ -1,5 +1,5 @@
 export interface IChatListItem {
-    uid: string;
+    _id: string;
     photoURL?: string,
     displayName: string;
     lastMessage: string;

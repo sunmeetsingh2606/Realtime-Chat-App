@@ -2,12 +2,12 @@ import classNames from 'classnames';
 import { FC, useEffect, useState } from 'react';
 // import ChatMessageBubble from './chatMessageBubble/ChatMessageBubble';
 // import { BiDotsHorizontal }from 'react-icons/bi';
-import { RootState } from '../../../Redux/store';
 import { useSelector } from 'react-redux';
+import { RootState } from '../../../Redux/store';
+import { findAllChatRoomMessages } from '../../../api/chat';
 import { listenToMessages } from '../../../api/sockets';
 import { IChatMessage } from '../../../interfaces/chatMessage';
-import { findAllChatRoomMessages } from '../../../api/chat';
-import { ClipLoader } from 'react-spinners';
+import Spinner from '../../Spinner/Spinner';
 import ChatMessageBubble from './chatMessageBubble/ChatMessageBubble';
 
 interface ChatMessagesProps {
@@ -47,9 +47,7 @@ const ChatMessages: FC<ChatMessagesProps> = ({ className, chatroomId }) => {
 
     if(loading)
     return (
-        <div className={classNames(className, 'flex items-center justify-center')}>
-           <ClipLoader color='#6b8afd' className='text-accent'/>
-        </div>
+        <Spinner />
     )
 
     return (
