@@ -6,7 +6,7 @@ export interface IChatMessage {
     message: string
 }
 
-export interface sendMessage {
+export interface sendChatMessage {
     chatroom: string,
     senderUser: string, 
     messageType?: 'message' | 'attachement' | 'voice',
