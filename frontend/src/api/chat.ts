@@ -1,3 +1,4 @@
+import { groupChatRoom } from "../interfaces/chatRoom";
 import { requestWithToken } from "./requestWithToken";
 
 export const findAllChatRooms = async (token:string) => {
@@ -29,7 +30,6 @@ export const findAllChatRoomMessages = async (roomId: string) => {
 
 
 export const createNewChatRoom = async (userId: string) => {
-    console.log({userId});
     const data = await requestWithToken(`${import.meta.env.VITE_API_ADDRESS}/chats`, {
         method: "POST",
         headers: {
@@ -37,7 +37,17 @@ export const createNewChatRoom = async (userId: string) => {
         },
         body: JSON.stringify({ users: [userId] })
     });
-    console.log(JSON.stringify({ users: [userId] }))
+    return data;
+}
+
+export const createNewGroupChatRoom = async (users: groupChatRoom) => {
+    const data = await requestWithToken(`${import.meta.env.VITE_API_ADDRESS}/chats`, {
+        method: "POST",
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(users)
+    });
     return data;
 }
 

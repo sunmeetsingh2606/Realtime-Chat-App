@@ -10,5 +10,6 @@ export interface sendMessage {
     chatroom: string,
     senderUser: string, 
     messageType?: 'message' | 'attachement' | 'voice',
-    message: string
+    message: string,
+
 }

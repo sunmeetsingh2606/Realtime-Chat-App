@@ -56,7 +56,9 @@ const ChatsListItem: FC<ChatsListItemProps> = ({ chat }) => {
                     <Avatar name={activeChatUser?.displayName || ""} className="rounded-full " size="50" />
                 }
                 <div className="flex-grow">
-                    <p className="text-slate-200">{activeChatUser?.displayName}</p>
+                    <p className="text-slate-200">{
+                        chat.isGroup ? chat.groupName : activeChatUser?.displayName
+                    }</p>
                     {/* <p className="text-slate-500 text-sm">{chat.lastMessage}</p> */}
                 </div>
             </div>

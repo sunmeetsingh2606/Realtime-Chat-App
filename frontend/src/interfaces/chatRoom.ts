@@ -10,3 +10,8 @@ export interface IChatroom {
     isActive: boolean;
 }
 
+export interface groupChatRoom {
+    isGroup: boolean,
+    groupName: string,
+    users: string[],
+}

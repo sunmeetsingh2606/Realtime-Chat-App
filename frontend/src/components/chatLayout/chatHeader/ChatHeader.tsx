@@ -24,12 +24,13 @@ const ChatHeader: FC<ChatHeaderProps> = ({ chat }) => {
     return (
         <div className="flex flex-row items-center">
            {
+            chat.isGroup ? <Avatar className="rounded-full mr-3" size="50" name={chat.groupName || ""}/> :
             activeChatUser?.photoURL ?
             <img src={ activeChatUser?.photoURL } className='w-[50px] mr-3 h-[50px] rounded-full' alt='avatar'/> :
             <Avatar name={activeChatUser?.displayName || ""} className="rounded-full mr-3" size="50" />
            }
             <div className="flex-grow">
-                <p className="text-xl text-slate-200">{activeChatUser?.displayName}</p>
+                <p className="text-xl text-slate-200">{chat.isGroup ? chat.groupName : activeChatUser?.displayName}</p>
                 <p className="text-sm text-slate-500">{activeChatUser?.isOnline ? 'Online' : 'Offline  '}</p>
             </div>
             <div>

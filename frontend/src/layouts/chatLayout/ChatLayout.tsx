@@ -3,7 +3,7 @@ import ChatHeader from '../../components/chatLayout/chatHeader/ChatHeader';
 import ChatMessages from '../../components/chatLayout/chatMessages/ChatMessages';
 import ChatsList from '../../components/chatLayout/chatsList/ChatsList';
 import TextField from '../../components/forms/textField/TextField';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router';
 import { RootState } from '../../Redux/store';
 import { useSelector } from 'react-redux/es/exports';
@@ -13,7 +13,7 @@ import { signout } from '../../firebase/firebaseUtils';
 import { GoSignOut } from 'react-icons/go';
 import { HiUserGroup } from 'react-icons/hi';
 import Avatar from 'react-avatar';
-import { createNewChatRoom, fetchUsers, findAllChatRooms } from '../../api/chat';
+import { createNewChatRoom, createNewGroupChatRoom, fetchUsers, findAllChatRooms } from '../../api/chat';
 import { IChatroom } from '../../interfaces/chatRoom';
 import Modal from '../../components/Modal/Modal';
 import { User } from '../../interfaces/User';
@@ -28,6 +28,8 @@ const ChatLayout: FC = () => {
     const [activeChat, setActiveChat] = useState<IChatroom>();
     const [allUsers, setAllUsers] = useState<User[]>()
     const [selectedUser, setSelectedUser] = useState<User>();
+    const [selectedGroupChatUsers, setSelectedGroupChatUser] = useState<User[]>([]);
+    const [groupName, setGroupName] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -55,6 +57,7 @@ const ChatLayout: FC = () => {
         if(token){
             const res = await findAllChatRooms(token);
             setChatRooms(res.data);
+            console.log({res})
         }
     }
 
@@ -64,10 +67,13 @@ const ChatLayout: FC = () => {
 
 
     const fetchAllusers = async() => {
+        if(allUsers?.length) return
+
         setLoading(true);
         const data = await fetchUsers();
         setAllUsers(data.data);
         setLoading(false);
+
     }
 
     const newChatRoom = async () => {
@@ -80,8 +86,34 @@ const ChatLayout: FC = () => {
         alert(`${data.msg}`);
     }
 
+    const newGroupChatRoom = async () => {
+        if(selectedGroupChatUsers.length < 2 ) {
+            alert('select more than 1 users ');
+            return
+        }
+
+        if(!groupName.length) {
+            alert('Choose a group name');
+            return
+        }
+        
+        const data = await createNewGroupChatRoom({
+            isGroup: true,
+            groupName: groupName,
+            users: selectedGroupChatUsers.map(user => { return user._id })
+        });
+
+        alert(data.msg);
+
+    }
+
+    const selectGroupChatUsers = (user: User) => {
+        setSelectedGroupChatUser([...selectedGroupChatUsers, user]);
+    }
+
     return (
         <div className="grid grid-cols-12 h-full">
+            {/** chat list */}
             <div className="col-span-3 flex flex-col gap-2 p-4">
                 <div className='flex items-center justify-between'>
                     <div className='flex items-center gap-2'>
@@ -107,7 +139,9 @@ const ChatLayout: FC = () => {
                                 </label>
                             </li>
                             <li>
-                                <label htmlFor='group-chat-modal' className='flex items-center justify-start'>
+                                <label 
+                                onClick={() => {  fetchAllusers() }}
+                                htmlFor='group-chat-modal' className='flex items-center justify-start'>
                                     <HiUserGroup size={25} />
                                     Group Chat
                                 </label>
@@ -154,6 +188,47 @@ const ChatLayout: FC = () => {
                         <label
                             onClick={newChatRoom}
                             htmlFor="new-chat-modal" className="btn btn-primary">Create Chat
+                        </label>
+                    </div>
+                </>
+                }
+            </Modal>  
+
+            {/** new Group chat modal */}
+            <Modal id='group-chat-modal'>
+                {
+                loading ?
+                    <Spinner />
+                 :
+                <>
+                    <ul className='grid grid-cols-5 items-start justify-center place-items-center gap-5 text-center'>
+                        {
+                            allUsers && allUsers.map((user) => (
+                                <li
+                                    onClick={() => { selectGroupChatUsers(user) }}
+                                    className={classNames('flex flex-col items-center cursor-pointer  p-3 rounded-md gap-3 hover:bg-primary justify-center', {
+                                        'bg-primary': selectedGroupChatUsers && 
+                                        selectedGroupChatUsers.some((u) => u._id === user._id )
+                                    })}>
+                                    {user.photoURL ?
+                                        <img src={user?.photoURL} className='w-[50px] h-[50px] rounded-full' alt='avatar' /> :
+                                        <Avatar name={user?.displayName || ""} className="rounded-full" size="50" />}
+                                    <p>{user.displayName}</p>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                    <div className="modal-action">
+                        <TextField 
+                        type='text'
+                        placeholder='Enter Group Name'
+                        value={groupName}
+                        onChange={(e: ChangeEvent<HTMLInputElement>)=> { setGroupName(e.target.value)} }
+                        />
+                        <label
+                            onClick={() => newGroupChatRoom() }
+                            htmlFor="group-chat-modal" className="btn btn-primary">
+                                New Group chat
                         </label>
                     </div>
                 </>
