@@ -51,6 +51,7 @@ const ChatsListItem: FC<ChatsListItemProps> = ({ chat }) => {
         >
             <div className="flex flex-row items-center gap-2">
                 {
+                    chat.isGroup ? <Avatar name={chat.groupName || ""} className="rounded-full " size="50" /> :
                     activeChatUser?.photoURL ?
                     <img src={ activeChatUser?.photoURL } className='w-[50px] h-[50px] rounded-full' alt='avatar'/> :
                     <Avatar name={activeChatUser?.displayName || ""} className="rounded-full " size="50" />

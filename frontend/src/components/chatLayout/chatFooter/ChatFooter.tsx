@@ -8,6 +8,8 @@ import { FC } from 'react';
 import { IChatroom } from '../../../interfaces/chatRoom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../Redux/store';
+import Modal from '../../Modal/Modal';
+import DragAndDrop from '../../DragAndDrop/DragAndDrop';
 
 interface ChatFooterProps {
     chat: IChatroom
@@ -17,7 +19,7 @@ interface ChatFooterProps {
 const ChatFooter:FC<ChatFooterProps> = ({ chat }) => {
     const user = useSelector((state: RootState) => state.user.user )
     const [message, setMessage] = useState('')
-
+    const [attachements, setAttachements] = useState<FileList>()
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setMessage(e.target.value);
     }
@@ -36,12 +38,24 @@ const ChatFooter:FC<ChatFooterProps> = ({ chat }) => {
     }
 
 
+    const uploadAttachements = (f: FileList) => {
+        setAttachements(f);
+        sendAttachments();
+    }
+
+    const sendAttachments = async () => {
+        console.log({attachements});
+    }
+
     return (
         <div className="flex flex-row items-center gap-1">
+            <Modal id='file-upload-modal'>
+                <DragAndDrop upload={uploadAttachements}/>
+            </Modal>
             <div className='aspect-square'>
-                <PrimaryButton>
-                        <ImAttachment />
-                </PrimaryButton>
+            <label htmlFor='file-upload-modal'  className='btn btn-primary w-full h-full'>
+                <ImAttachment />
+            </label>
             </div>
             <form className="flex-grow flex gap-1" onSubmit={send}>
                 <TextField 
